@@ -1,7 +1,7 @@
 package com.grupp1.school.backend.rest.api.model;
 
 public class Course {
-    private final Integer id;
+    private Integer id;
     private String name;
     private Integer teacherId;
     private Integer maxStudents;
@@ -27,6 +27,10 @@ public class Course {
 
     public Integer getMaxStudents() {
         return maxStudents;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {
