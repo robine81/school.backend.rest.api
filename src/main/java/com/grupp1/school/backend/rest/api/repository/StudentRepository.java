@@ -35,9 +35,15 @@ public class StudentRepository {
 
     public List<Student> findByEmail(String email) {
         return students.stream()
-                .filter(s -> s.getStudentName()
+                .filter(s -> s.getStudentEmail()
                         .toLowerCase()
                         .contains(email.toLowerCase()))
+                .toList();
+    }
+
+    public List<Student> findByAge(int age) {
+        return students.stream()
+                .filter(s -> s.getStudentAge() == age)
                 .toList();
     }
 

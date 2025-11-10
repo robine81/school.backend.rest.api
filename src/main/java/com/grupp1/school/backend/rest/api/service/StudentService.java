@@ -46,6 +46,7 @@ public class StudentService {
         for(Student s: students) {
             studentsDTO.add(toResponseDTO(s));
         }
+        System.out.println("Hittade: " + students.size() + " studenter");
         return studentsDTO;
     }
 
@@ -59,6 +60,35 @@ public class StudentService {
         }
         return studentsDTO;
     }
+
+    public List<StudentDTO> getByAge(int age) {
+        List<Student> students = repository.findByAge(age);
+        List<StudentDTO> studentsDTO = new ArrayList<>();
+
+        for(Student s: students)
+        {
+            studentsDTO.add(toResponseDTO(s));
+        }
+        return studentsDTO;
+    }
+
+    public StudentDTO addStudent (StudentDTO request) {
+        return toResponseDTO(repository.save(toEntity(request)));
+    }
+
+    public StudentDTO updateStudent (int id, StudentDTO request) {
+        Optional<Student> existing = repository.findById(id);
+
+        if(existing.isPresent()){
+            existing.get().setStudentName(request.getStudentName());
+            existing.get().setStudentAge(request.getStudentAge());
+            existing.get().setStudentEmail(request.getStudentEmail());
+            return toResponseDTO(existing.get());
+        }
+        return null;
+    }
+
+    public boolean deleteStudent(int id) { return repository.deleteById(id); }
 
     private StudentDTO toResponseDTO(Student student){
         return new StudentDTO(student.getStudentName(), student.getStudentAge(), student.getStudentEmail());

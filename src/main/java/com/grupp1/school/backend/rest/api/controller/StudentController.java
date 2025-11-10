@@ -2,12 +2,9 @@ package com.grupp1.school.backend.rest.api.controller;
 
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,9 +19,47 @@ public class StudentController {
     public ResponseEntity<List<StudentDTO>> getALl() { return ResponseEntity.ok(service.getAll()); }
 
     @GetMapping("{id}")
-    public ResponseEntity<StudentDTO> getById(@Validated @PathVariable int id) {
+    public ResponseEntity<StudentDTO> getById(@Valid @PathVariable int id) {
         return service.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody StudentDTO studentDTO){
+       return ResponseEntity.status(201).body(service.addStudent(studentDTO));
+    }
+
+    @PutMapping({"/{id}"})
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable int id, @Valid @RequestBody StudentDTO studentDTO){
+        StudentDTO result = service.updateStudent(id, studentDTO);
+        if(result != null){
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id){
+        boolean removed = service.deleteStudent(id);
+        return removed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<StudentDTO>> search(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age){
+        System.out.println("Controller - name: '" + name + "', age: " + age);
+        List<StudentDTO> results;
+
+        if(age != null){
+            results = service.getByAge(age);
+        } else if (name != null) {
+            results = service.getByName(name);
+        } else {
+            results= service.getAll();
+        }
+        System.out.println("Controller - returnerar " + results.size() + " resultat");
+        return ResponseEntity.ok(results);
+
     }
 }
