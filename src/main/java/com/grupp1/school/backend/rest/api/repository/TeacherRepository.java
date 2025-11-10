@@ -26,14 +26,35 @@ public class TeacherRepository {
         return teachers.stream().filter(t -> t.getId() == id).findFirst();
    }
 
-   public Optional<Teacher> getbyEmail(String email){
-        return teachers.stream().filter(t -> t.getEmail().equalsIgnoreCase(email)).findFirst();
+   public Optional<Teacher> getByEmail(String email){
+        return teachers.stream()
+                .filter(t -> t.getEmail().equalsIgnoreCase(email))
+                .findFirst();
    }
 
    public List<Teacher> getByName(String name){
         return teachers.stream()
-                .filter(t -> t.getName().toLowerCase().contains(name.toLowerCase()))
+                .filter(t -> t.getName()
+                        .toLowerCase()
+                        .contains(name.toLowerCase()))
                 .toList();
    }
 
+   public void create(Teacher teacher){
+        teachers.add(teacher);
+   }
+
+    public Teacher save(Teacher teacher){
+        int nextId = teachers.stream()
+                .mapToInt(t -> t.getId())
+                .max()
+                .orElse(0) + 1;
+        teacher.setId(nextId);
+        teachers.add(teacher);
+        return teacher;
+    }
+
+    public boolean deleteById(int id){
+        return teachers.removeIf(t -> t.getId() == id );
+    }
 }

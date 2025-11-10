@@ -1,6 +1,7 @@
 package com.grupp1.school.backend.rest.api.service;
 
 import com.grupp1.school.backend.rest.api.model.Teacher;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
 import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +25,23 @@ public class TeacherService {
     }
 
     public Optional<Teacher> getByEmail(String email){
-        return repository.getbyEmail(email);
+        return repository.getByEmail(email);
     }
 
     public List<Teacher> getByName(String name){
         return repository.getByName(name);
     }
 
+    public TeacherDTO addTeacher(TeacherDTO teacher){
+        return  toDTO(repository.save(toEntity(teacher)));
+    }
+
+    private Teacher toEntity(TeacherDTO dto){
+        return new Teacher(dto.getId(), dto.getAge(), dto.getName(), dto.getEmail());
+    }
+
+
+    private TeacherDTO toDTO(Teacher teacher){
+        return new TeacherDTO(teacher.getId(), teacher.getAge(), teacher.getName(), teacher.getEmail());
+    }
 }
