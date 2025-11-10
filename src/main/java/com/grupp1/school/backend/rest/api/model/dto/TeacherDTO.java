@@ -1,12 +1,11 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 public class TeacherDTO {
-
-    @Min(18)
+    @Positive(message = "ID must be positive")
+    Integer id;
+    @Min(value = 18, message = "A teacher must be 18 or above")
     private int age;
     @NotBlank(message = "Name is mandatory")
     private String name;
@@ -16,10 +15,19 @@ public class TeacherDTO {
 
     public TeacherDTO(){}
 
-    public TeacherDTO(int age, String name, String email){
+    public TeacherDTO(int id, int age, String name, String email){
+        this.id = id;
         this.age = age;
         this.name = name;
         this.email = email;
+    }
+// TODO sort our id handling
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getAge () {

@@ -25,33 +25,23 @@ public class TeacherService {
     }
 
     public Optional<Teacher> getByEmail(String email){
-        return repository.getbyEmail(email);
+        return repository.getByEmail(email);
     }
 
     public List<Teacher> getByName(String name){
         return repository.getByName(name);
     }
 
-    private Teacher toEntity(TeacherDTO request){
-        Teacher teacher = new Teacher();
-
-        if (request.getName() != null){
-            teacher.setName(request.getName());
-        }
-        if(request.getEmail() != null){
-            teacher.setEmail(request.getEmail());
-        }
-        if(request.getAge() != null){
-            teacher.setAge(request.getAge());
-        }
-        return teacher;
+    public TeacherDTO addTeacher(TeacherDTO teacher){
+        return  toDTO(repository.save(toEntity(teacher)));
     }
 
-    private void addTeacher(TeacherDTO teacher){
-
+    private Teacher toEntity(TeacherDTO dto){
+        return new Teacher(dto.getId(), dto.getAge(), dto.getName(), dto.getEmail());
     }
 
-    private TeacherDTO toTeacherDTO(Teacher teacher){
-        return new TeacherDTO(teacher.getId(), teacher.getName(), teacher.getEmail());
+
+    private TeacherDTO toDTO(Teacher teacher){
+        return new TeacherDTO(teacher.getId(), teacher.getAge(), teacher.getName(), teacher.getEmail());
     }
 }

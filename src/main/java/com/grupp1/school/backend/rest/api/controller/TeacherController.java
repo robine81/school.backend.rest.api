@@ -1,10 +1,11 @@
 package com.grupp1.school.backend.rest.api.controller;
 
 import com.grupp1.school.backend.rest.api.model.Teacher;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
 import com.grupp1.school.backend.rest.api.service.TeacherService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +21,10 @@ public class TeacherController {
     @GetMapping
     public List<Teacher> getAll(){
         return service.getAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<TeacherDTO> addTeacher(@Valid @RequestBody TeacherDTO dto){
+        return ResponseEntity.ok(service.addTeacher(dto));
     }
 }
