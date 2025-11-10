@@ -1,5 +1,6 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -8,7 +9,8 @@ public class StudentDTO {
     private String studentName;
     @Min(18)
     private int studentAge;
-    @NotBlank(message= "Email is mandatory")
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Invalid format")
     private String studentEmail;
 
     public StudentDTO() {}
