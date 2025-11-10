@@ -30,4 +30,14 @@ public class Student {
     public String getStudentEmail() { return studentEmail; }
 
     public void setStudentEmail(String studentEmail) { this.studentEmail = studentEmail; }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", studentName='" + studentName + '\'' +
+                ", studentAge=" + studentAge +
+                ", studentEmail='" + studentEmail + '\'' +
+                '}';
+    }
 }

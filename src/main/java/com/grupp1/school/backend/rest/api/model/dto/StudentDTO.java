@@ -1,23 +1,23 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class StudentDTO {
-    private int studentId;
+    @NotBlank(message= "Student name must be specified")
     private String studentName;
+    @Min(18)
     private int studentAge;
+    @NotBlank(message= "Email is mandatory")
     private String studentEmail;
 
     public StudentDTO() {}
 
-    public StudentDTO(int studentId, String studentName, int studentAge, String studentEmail) {
-        this.studentId = studentId;
+    public StudentDTO(String studentName, int studentAge, String studentEmail) {
         this.studentName = studentName;
         this.studentAge = studentAge;
         this.studentEmail = studentEmail;
     }
-
-    public int getStudentId() { return studentId; }
-
-    public void setStudentId(int studentId) { this.studentId = studentId;}
 
     public String getStudentName() { return studentName; }
 
@@ -30,4 +30,13 @@ public class StudentDTO {
     public String getStudentEmail() { return studentEmail; }
 
     public void setStudentEmail(String studentEmail) { this.studentEmail = studentEmail; }
+
+    @Override
+    public String toString() {
+        return "StudentDTO{" +
+                "studentName='" + studentName + '\'' +
+                ", studentAge=" + studentAge +
+                ", studentEmail='" + studentEmail + '\'' +
+                '}';
+    }
 }
