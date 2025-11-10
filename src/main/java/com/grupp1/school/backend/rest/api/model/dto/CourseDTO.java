@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
 public class CourseDTO {
-    @NotNull(message = "Name is required.")
+    @NotNull(message = "ID is required.")
+    Integer id;
+
     @Length(min = 8, message = "Course name has to be at least 8 characters long.")
     String name;
 
@@ -14,13 +16,17 @@ public class CourseDTO {
     Integer teacherId;
 
     @Min(value = 10, message = "A course must allow for a minimum of 10 students.")
-    @NotNull(message = "Student limit is required.")
     Integer maxStudents;
 
-    public CourseDTO(String name, Integer teacherId, Integer maxStudents) {
+    public CourseDTO(Integer id, String name, Integer teacherId, Integer maxStudents) {
+        this.id = id;
         this.name = name;
         this.teacherId = teacherId;
         this.maxStudents = maxStudents;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
@@ -33,6 +39,10 @@ public class CourseDTO {
 
     public Integer getMaxStudents() {
         return maxStudents;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {
