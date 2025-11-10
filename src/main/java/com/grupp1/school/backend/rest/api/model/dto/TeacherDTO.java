@@ -22,7 +22,7 @@ public class TeacherDTO {
         this.email = email;
     }
 
-    public int getAge () {
+    public Integer getAge () {
         return age;
     }
 

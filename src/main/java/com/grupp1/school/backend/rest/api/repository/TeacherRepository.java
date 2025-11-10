@@ -36,4 +36,21 @@ public class TeacherRepository {
                 .toList();
    }
 
+   public void create(Teacher teacher){
+        teachers.add(teacher);
+   }
+
+    public Teacher save(Teacher teacher){
+        int nextId = teachers.stream()
+                .mapToInt(t -> t.getId())
+                .max()
+                .orElse(0) + 1;
+        teacher.setId(nextId);
+        teachers.add(teacher);
+        return teacher;
+    }
+
+    public boolean deleteById(int id){
+        return teachers.removeIf(t -> t.getId() == id );
+    }
 }
