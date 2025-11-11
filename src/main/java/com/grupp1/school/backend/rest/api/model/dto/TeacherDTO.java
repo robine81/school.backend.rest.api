@@ -6,11 +6,14 @@ public class TeacherDTO {
 
     @Positive(message = "ID must be positive")
     private Integer id;
+
     @Min(value = 18, message = "A teacher must be 18 or above")
     private int age;
+
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, message = "name must contain at least 3 characters")
     private String name;
+
     @Email
     @NotBlank(message = "E-mail is mandatory")
     private String email;
