@@ -26,7 +26,7 @@ public class CourseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Integer id){
-        return service.getById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping("/search")
@@ -48,7 +48,7 @@ public class CourseController {
 
     @PutMapping
     public ResponseEntity<CourseDTO> updateCourse(@Valid @RequestBody CourseDTO dto) {
-        return service.update(dto).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @DeleteMapping("/{id}")

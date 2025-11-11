@@ -1,5 +1,7 @@
 package com.grupp1.school.backend.rest.api.service;
 
+import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
+import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Course;
 import com.grupp1.school.backend.rest.api.model.dto.CourseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
@@ -18,6 +20,7 @@ public class CourseService {
 
     public CourseDTO create(CourseDTO dto){
         Course entity = mapDtoToEntity(dto);
+        if (repository.existsById(dto.getId())) throw new ResourceAlreadyExistsException("Course already exists.");
         return mapEntityToDto(repository.save(entity));
     }
 
@@ -25,8 +28,8 @@ public class CourseService {
         return repository.findAll().stream().map(this::mapEntityToDto).toList();
     }
 
-    public Optional<CourseDTO> getById(Integer id){
-        return repository.findById(id).map(this::mapEntityToDto);
+    public CourseDTO getById(Integer id){
+        return repository.findById(id).map(this::mapEntityToDto).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + id));
     }
 
     public List<CourseDTO> getByTeacherId(Integer teacherId){
@@ -37,21 +40,20 @@ public class CourseService {
         return repository.findByName(name).stream().map(this::mapEntityToDto).toList();
     }
 
-    public Optional<CourseDTO> update(CourseDTO dto){
-        Optional<Course> existing = repository.findById(dto.getId());
-        if (existing.isPresent()) {
-            if(dto.getName() != null){
-                existing.get().setName(dto.getName());
-            }
-            if(dto.getTeacherId() != null){
-                existing.get().setTeacherId(dto.getTeacherId());
-            }
-            if(dto.getMaxStudents() != null){
-                existing.get().setMaxStudents(dto.getMaxStudents());
-            }
-            repository.save(existing.get());
+    public CourseDTO update(CourseDTO dto){
+        Course existing = repository.findById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + dto.getId()));
+        if(dto.getName() != null){
+            existing.setName(dto.getName());
         }
-        return existing.map(this::mapEntityToDto);
+        if(dto.getTeacherId() != null){
+            existing.setTeacherId(dto.getTeacherId());
+        }
+        if(dto.getMaxStudents() != null){
+            existing.setMaxStudents(dto.getMaxStudents());
+        }
+        repository.save(existing);
+
+        return mapEntityToDto(existing);
     }
 
     public boolean deleteById(Integer id){
