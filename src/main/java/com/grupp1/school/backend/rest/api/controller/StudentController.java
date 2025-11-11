@@ -20,9 +20,7 @@ public class StudentController {
 
     @GetMapping("{id}")
     public ResponseEntity<StudentDTO> getById(@Valid @PathVariable int id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping
