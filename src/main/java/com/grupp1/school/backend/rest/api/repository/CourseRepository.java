@@ -29,7 +29,7 @@ public class CourseRepository {
         return courses.stream().filter(course -> course.getTeacherId() == teacherId && teacherId != null).toList();
     }
 
-    public Course update(Integer id, String name, Integer teacherId, Integer maxStudents){
+    public Optional<Course> update(Integer id, String name, Integer teacherId, Integer maxStudents){
         Optional<Course> course = courses.stream().filter(c -> c.getId() == id && id != null).findFirst();
         if(course.isPresent()){
             if (name != null){
@@ -41,9 +41,8 @@ public class CourseRepository {
             if (maxStudents != null){
                 course.get().setMaxStudents(maxStudents);
             }
-            return course.get();
         }
-        return null;
+        return course;
     }
 
     public boolean removeById(Integer id){

@@ -5,6 +5,9 @@ import com.grupp1.school.backend.rest.api.model.dto.CourseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CourseService {
     private final CourseRepository repository;
@@ -15,17 +18,28 @@ public class CourseService {
 
     public CourseDTO create(CourseDTO dto){
         Course entity = mapDtoToEntity(dto);
-        repository.save(entity);
-        return dto;
+        return mapEntityToDto(repository.save(entity));
     }
 
-    public CourseDTO getById(Integer id){
-        return repository.findById(id).map(this::mapEntityToDto).orElseThrow();
+    public List<CourseDTO> getAll(){
+        return repository.findAll().stream().map(this::mapEntityToDto).toList();
     }
 
-    public CourseDTO update(CourseDTO dto){
-        Course entity = repository.update(dto.getId(), dto.getName(), dto.getTeacherId(), dto.getMaxStudents());
-        return mapEntityToDto(entity);
+    public Optional<CourseDTO> getById(Integer id){
+        return repository.findById(id).map(this::mapEntityToDto);
+    }
+
+    public List<CourseDTO> getByTeacherId(Integer teacherId){
+        return repository.findByTeacherId(teacherId).stream().map(this::mapEntityToDto).toList();
+    }
+
+    public Optional<CourseDTO> update(CourseDTO dto){
+        Optional<Course> entity = repository.update(dto.getId(), dto.getName(), dto.getTeacherId(), dto.getMaxStudents());
+        return entity.map(this::mapEntityToDto);
+    }
+
+    public boolean deleteById(Integer id){
+        return repository.removeById(id);
     }
 
     private Course mapDtoToEntity(CourseDTO dto){

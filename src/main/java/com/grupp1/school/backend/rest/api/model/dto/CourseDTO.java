@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
 public class CourseDTO {
-    @NotNull(message = "ID is required.")
+    @Positive(message = "ID must be positive.")
     Integer id;
 
     @Length(min = 8, message = "Course name has to be at least 8 characters long.")
