@@ -17,19 +17,19 @@ public class TeacherService {
     }
 
     public List<Teacher> getAll(){
-        return repository.getAll();
+        return repository.findAll();
     }
 
     public Optional<Teacher> getById(int id){
-        return repository.getById(id);
+        return repository.findById(id);
     }
 
     public Optional<Teacher> getByEmail(String email){
-        return repository.getByEmail(email);
+        return repository.findByEmail(email);
     }
 
     public List<Teacher> getByName(String name){
-        return repository.getByName(name);
+        return repository.findByName(name);
     }
 
     public TeacherDTO addTeacher(TeacherDTO teacher){
