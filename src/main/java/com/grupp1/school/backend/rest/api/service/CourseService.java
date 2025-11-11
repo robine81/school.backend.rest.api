@@ -34,12 +34,28 @@ public class CourseService {
     }
 
     public Optional<CourseDTO> update(CourseDTO dto){
-        Optional<Course> entity = repository.update(dto.getId(), dto.getName(), dto.getTeacherId(), dto.getMaxStudents());
-        return entity.map(this::mapEntityToDto);
+        Optional<Course> existing = repository.findById(dto.getId());
+        if (existing.isPresent()) {
+            if(dto.getName() != null){
+                existing.get().setName(dto.getName());
+            }
+            if(dto.getTeacherId() != null){
+                existing.get().setTeacherId(dto.getTeacherId());
+            }
+            if(dto.getMaxStudents() != null){
+                existing.get().setMaxStudents(dto.getMaxStudents());
+            }
+            repository.save(existing.get());
+        }
+        return existing.map(this::mapEntityToDto);
     }
 
     public boolean deleteById(Integer id){
-        return repository.removeById(id);
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     private Course mapDtoToEntity(CourseDTO dto){
