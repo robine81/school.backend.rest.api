@@ -29,6 +29,18 @@ public class CourseController {
         return service.getById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CourseDTO>> search(@RequestParam(required = false) Integer teacherId, @RequestParam(required = false) String name){
+        if (teacherId != null && name != null){
+            return ResponseEntity.badRequest().build();
+        } else if (teacherId != null) {
+            return ResponseEntity.ok(service.getByTeacherId(teacherId));
+        } else if (name != null){
+            return ResponseEntity.ok(service.getByName(name));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping
     public ResponseEntity<CourseDTO> addCourse(@Valid @RequestBody CourseDTO dto){
         return ResponseEntity.ok(service.create(dto));
