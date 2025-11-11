@@ -22,16 +22,16 @@ public class TeacherService {
                 .toList();
     }
 
-    public Optional<Teacher> getById(int id){
-        return repository.findById(id);
+    public Optional<TeacherDTO> getById(int id){
+        return repository.findById(id).map(this::toDTO);
     }
 
-    public Optional<Teacher> getByEmail(String email){
-        return repository.findByEmail(email);
+    public Optional<TeacherDTO> getByEmail(String email){
+        return repository.findByEmail(email).map(this::toDTO);
     }
 
-    public List<Teacher> getByName(String name){
-        return repository.findByName(name);
+    public List<TeacherDTO> getByName(String name){
+        return repository.findByName(name).stream().map(this::toDTO).toList();
     }
 
     public TeacherDTO addTeacher(TeacherDTO teacher){
@@ -46,9 +46,9 @@ public class TeacherService {
         return false;
     }
 
-    public TeacherDTO updateTeacher(int id, TeacherDTO dto){
+    public TeacherDTO update(TeacherDTO dto){
 
-        Optional<Teacher> opt = repository.findById(id);
+        Optional<Teacher> opt = repository.findById(dto.getId());
 
         if (opt.isPresent()){
             Teacher existing = opt.get();
@@ -59,26 +59,6 @@ public class TeacherService {
             return toDTO(existing);
         }
 
-        return null;
-    }
-
-    public TeacherDTO patchTeacher(int id, TeacherDTO dto){
-        Optional<Teacher> opt = repository.findById(id);
-
-        if (opt.isPresent()) {
-            Teacher existing = opt.get();
-            if(dto.getName() != null){
-                existing.setName(dto.getName());
-            }
-            if(dto.getAge() != null){
-                existing.setAge(dto.getAge());
-            }
-            if(dto.getEmail() != null){
-                existing.setEmail(dto.getEmail());
-            }
-            repository.save(existing);
-            return toDTO(existing);
-        }
         return null;
     }
 
