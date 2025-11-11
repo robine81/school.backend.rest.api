@@ -22,8 +22,27 @@ public class TeacherController {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable int id){
+        return service.getById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<TeacherDTO> addTeacher(@Valid @RequestBody TeacherDTO dto){
         return ResponseEntity.ok(service.addTeacher(dto));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<TeacherDTO> updateTeacher(@Valid @RequestBody TeacherDTO dto){
+        return ResponseEntity.ok(service.update(dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTeacher(@PathVariable int id){
+        if (service.deleteById(id)){
+            return ResponseEntity.ok("Deletion succesful");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
