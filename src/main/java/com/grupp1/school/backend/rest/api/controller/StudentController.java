@@ -27,6 +27,9 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody StudentDTO studentDTO){
+        if(service.emailExists(studentDTO.getStudentEmail())){
+            return ResponseEntity.status(409).build();
+        }
        return ResponseEntity.status(201).body(service.addStudent(studentDTO));
     }
 
@@ -43,7 +46,7 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id){
         boolean removed = service.deleteStudent(id);
-        return removed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/search")

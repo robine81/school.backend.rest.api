@@ -1,27 +1,21 @@
 package com.grupp1.school.backend.rest.api.service;
 
-import com.fasterxml.jackson.databind.BeanProperty;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
+import com.grupp1.school.backend.rest.api.repository.StudentRepositoryOld;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class StudentService {
 
     private final StudentRepository repository;
 
-    private final AtomicLong idCounter = new AtomicLong();
-
-    public StudentService(StudentRepository repository) {
-        this.repository = repository;
-    }
+    public StudentService(StudentRepository repository) { this.repository = repository; }
 
     public List<StudentDTO> getAll() {
         List<Student> students = repository.findAll();
@@ -29,84 +23,95 @@ public class StudentService {
 
         for(Student s : students)
         {
-            studentsDTO.add(toResponseDTO(s));
+            studentsDTO.add(toDTO(s));
         }
         return studentsDTO;
     }
 
-    public Optional<StudentDTO> getById(int id) { return repository.findById(id)
-            .map(this::toResponseDTO);
-
+    public Optional<StudentDTO> getById(Integer id) {
+        return repository.findById(id)
+            .map(this::toDTO);
     }
 
     public List<StudentDTO> getByName(String name) {
-        List<Student> students = repository.findByName(name);
+        List<Student> students = repository.findByStudentName(name);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students) {
-            studentsDTO.add(toResponseDTO(s));
+            studentsDTO.add(toDTO(s));
         }
-        System.out.println("Hittade: " + students.size() + " studenter");
         return studentsDTO;
     }
 
     public List<StudentDTO> getByEmail(String email) {
-        List<Student> students = repository.findByEmail(email);
+        List<Student> students = repository.findByStudentEmail(email);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
         {
-            studentsDTO.add(toResponseDTO(s));
+            studentsDTO.add(toDTO(s));
         }
         return studentsDTO;
     }
 
     public List<StudentDTO> getByAge(int age) {
-        List<Student> students = repository.findByAge(age);
+        List<Student> students = repository.findByStudentAge(age);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
         {
-            studentsDTO.add(toResponseDTO(s));
+            studentsDTO.add(toDTO(s));
         }
         return studentsDTO;
     }
 
     public StudentDTO addStudent (StudentDTO request) {
-        return toResponseDTO(repository.save(toEntity(request)));
+        return toDTO(repository.save(toEntity(request)));
     }
 
     public StudentDTO updateStudent (int id, StudentDTO request) {
         Optional<Student> existing = repository.findById(id);
 
         if(existing.isPresent()){
+            existing.get().setStudentId(request.getStudentId());
             existing.get().setStudentName(request.getStudentName());
-            existing.get().setStudentAge(request.getStudentAge());
             existing.get().setStudentEmail(request.getStudentEmail());
-            return toResponseDTO(existing.get());
+            existing.get().setStudentAge(request.getStudentAge());
+            return toDTO(existing.get());
         }
         return null;
     }
 
-    public boolean deleteStudent(int id) { return repository.deleteById(id); }
-
-    private StudentDTO toResponseDTO(Student student){
-        return new StudentDTO(student.getStudentName(), student.getStudentAge(), student.getStudentEmail());
+    public boolean deleteStudent(int id) {
+        if(repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    private Student toEntity(StudentDTO request){
+    public boolean emailExists(String email) {
+        return repository.existsByStudentEmail(email);
+    }
+
+    private StudentDTO toDTO(Student student){
+        return new StudentDTO(student.getStudentId(), student.getStudentName(), student.getStudentEmail(), student.getStudentAge());
+    }
+
+    private Student toEntity(StudentDTO dto){
         Student student = new Student();
 
-        if(!request.getStudentName().isBlank()){
-            student.setStudentName(request.getStudentName());
+        student.setStudentId(dto.getStudentId());
+
+        if(!dto.getStudentName().isBlank()){
+            student.setStudentName(dto.getStudentName());
         }
-        if(request.getStudentAge() != 0){
-            student.setStudentAge(request.getStudentAge());
+        if(!dto.getStudentEmail().isBlank()){
+            student.setStudentEmail(dto.getStudentEmail());
         }
-        if(!request.getStudentEmail().isBlank()){
-            student.setStudentEmail(request.getStudentEmail());
+        if(dto.getStudentAge() != 0){
+            student.setStudentAge(dto.getStudentAge());
         }
         return student;
     }
-
 }
