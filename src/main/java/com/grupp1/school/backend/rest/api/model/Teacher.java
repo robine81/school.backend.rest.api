@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "teachers")
 public class Teacher {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
    private int age;
    private String name;
