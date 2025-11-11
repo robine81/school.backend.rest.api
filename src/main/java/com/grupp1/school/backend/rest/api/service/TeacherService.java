@@ -16,24 +16,50 @@ public class TeacherService {
         this.repository = repository;
     }
 
-    public List<Teacher> getAll(){
-        return repository.getAll();
+    public List<TeacherDTO> getAll(){
+        return repository.findAll()
+                .stream().map(this::toDTO)
+                .toList();
     }
 
-    public Optional<Teacher> getById(int id){
-        return repository.getById(id);
+    public Optional<TeacherDTO> getById(int id){
+        return repository.findById(id).map(this::toDTO);
     }
 
-    public Optional<Teacher> getByEmail(String email){
-        return repository.getByEmail(email);
+    public Optional<TeacherDTO> getByEmail(String email){
+        return repository.findByEmail(email).map(this::toDTO);
     }
 
-    public List<Teacher> getByName(String name){
-        return repository.getByName(name);
+    public List<TeacherDTO> getByName(String name){
+        return repository.findByName(name).stream().map(this::toDTO).toList();
     }
 
     public TeacherDTO addTeacher(TeacherDTO teacher){
         return  toDTO(repository.save(toEntity(teacher)));
+    }
+
+    public boolean deleteById(int id){
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public TeacherDTO update(TeacherDTO dto){
+
+        Optional<Teacher> opt = repository.findById(dto.getId());
+
+        if (opt.isPresent()){
+            Teacher existing = opt.get();
+            existing.setName(dto.getName());
+            existing.setEmail(dto.getEmail());
+            existing.setAge(dto.getAge());
+            repository.save(existing);
+            return toDTO(existing);
+        }
+
+        return null;
     }
 
     private Teacher toEntity(TeacherDTO dto){

@@ -1,21 +1,28 @@
 package com.grupp1.school.backend.rest.api.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "teachers")
 public class Teacher {
-   private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Integer id;
    private int age;
    private String name;
    private String email;
 
    public Teacher(){}
 
-    public Teacher(int id, int age, String name, String email){
+    public Teacher(Integer id, int age, String name, String email){
        this.id = id;
        this.age = age;
        this.name = name;
        this.email = email;
     }
 
-    public int getId () {
+    public Integer getId () {
         return id;
     }
 
