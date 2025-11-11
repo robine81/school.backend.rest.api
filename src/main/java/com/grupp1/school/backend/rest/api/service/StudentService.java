@@ -1,5 +1,6 @@
 package com.grupp1.school.backend.rest.api.service;
 
+import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
@@ -28,9 +29,10 @@ public class StudentService {
         return studentsDTO;
     }
 
-    public Optional<StudentDTO> getById(Integer id) {
+    public StudentDTO getById(Integer id) {
         return repository.findById(id)
-            .map(this::toDTO);
+            .map(this::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
     public List<StudentDTO> getByName(String name) {
@@ -67,6 +69,7 @@ public class StudentService {
 
     public StudentDTO addStudent (StudentDTO request) {
         return toDTO(repository.save(toEntity(request)));
+
     }
 
     public StudentDTO updateStudent (int id, StudentDTO request) {
