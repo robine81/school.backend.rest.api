@@ -1,5 +1,7 @@
 package com.grupp1.school.backend.rest.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,44 +9,44 @@ import jakarta.persistence.*;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer studentId;
 
-    private String name;
-    private int age;
-    private String email;
+    @Column(name = "name")
+    private String studentName;
+    @Column(name = "email")
+    private String studentEmail;
+    @Column(name = "age")
+    private int studentAge;
 
     public Student(Integer studentId, String studentName, int studentAge, String studentEmail) {
-        this.id = studentId;
-        this.name = studentName;
-        this.age = studentAge;
-        this.email = studentEmail;
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studentAge = studentAge;
+        this.studentEmail = studentEmail;
     }
 
     public Student() {}
 
-    public Integer getStudentId() { return id; }
+    public Integer getStudentId() { return studentId; }
+    public void setStudentId(Integer studentId) { this.studentId = studentId; }
 
-    public void setStudentId(Integer studentId) { this.id = studentId; }
+    public String getStudentName() { return studentName; }
+    public void setStudentName(String studentName) { this.studentName = studentName; }
 
-    public String getStudentName() { return name; }
+    public String getStudentEmail() { return studentEmail; }
+    public void setStudentEmail(String studentEmail) { this.studentEmail = studentEmail; }
 
-    public void setStudentName(String studentName) { this.name = studentName; }
-
-    public int getStudentAge() { return age; }
-
-    public void setStudentAge(int studentAge) { this.age = studentAge; }
-
-    public String getStudentEmail() { return email; }
-
-    public void setStudentEmail(String studentEmail) { this.email = studentEmail; }
+    public int getStudentAge() { return studentAge; }
+    public void setStudentAge(int studentAge) { this.studentAge = studentAge; }
 
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + id +
-                ", studentName='" + name + '\'' +
-                ", studentAge=" + age +
-                ", studentEmail='" + email + '\'' +
+                "id=" + studentId +
+                ", name='" + studentName + '\'' +
+                ", age=" + studentAge +
+                ", email='" + studentEmail + '\'' +
                 '}';
     }
 }

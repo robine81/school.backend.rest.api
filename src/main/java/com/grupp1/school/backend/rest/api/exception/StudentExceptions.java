@@ -6,5 +6,6 @@ public class StudentExceptions {
     Students age must be over 18
     Email is mandatory
     Invalid email format
+    Email exists 400
     * */
 }
