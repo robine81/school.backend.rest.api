@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     List<Course> findByTeacherId(Integer teacherId);
+
+    List<Course> findByName(String name);
 }

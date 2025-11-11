@@ -33,6 +33,10 @@ public class CourseService {
         return repository.findByTeacherId(teacherId).stream().map(this::mapEntityToDto).toList();
     }
 
+    public List<CourseDTO> getByName(String name){
+        return repository.findByName(name).stream().map(this::mapEntityToDto).toList();
+    }
+
     public Optional<CourseDTO> update(CourseDTO dto){
         Optional<Course> existing = repository.findById(dto.getId());
         if (existing.isPresent()) {
