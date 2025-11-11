@@ -15,7 +15,7 @@ public class TeacherDTO {
     @NotBlank(message = "E-mail is mandatory")
     private String email;
 
-    public TeacherDTO(){}
+//    public TeacherDTO(){}
 
     public TeacherDTO(Integer id, int age, String name, String email){
         this.id = id;
