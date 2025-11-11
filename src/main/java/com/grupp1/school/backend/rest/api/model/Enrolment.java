@@ -1,37 +1,50 @@
 package com.grupp1.school.backend.rest.api.model;
 
-public class Enrolment {
-    private Integer id;
-    private Integer studentID;
-    private Integer courseId;
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-    public Enrolment(Integer id, Integer studentID, Integer courseId) {
+@Entity
+@Table(name = "enrolments")
+public class Enrolment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Long studentID;
+
+    @Column(nullable = false)
+    private Long courseID;
+
+    public Enrolment() {}
+
+    public Enrolment(Long id, Long studentID, Long courseID) {
         this.id = id;
         this.studentID = studentID;
-        this.courseId = courseId;
+        this.courseID = courseID;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getStudentID() {
+    public Long getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(Integer studentID) {
+    public void setStudentID(Long studentID) {
         this.studentID = studentID;
     }
 
-    public Integer getCourseId() {
-        return courseId;
+    public Long getCourseID() {
+        return courseID;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setCourseID(Long courseID) {
+        this.courseID = courseID;
     }
 }

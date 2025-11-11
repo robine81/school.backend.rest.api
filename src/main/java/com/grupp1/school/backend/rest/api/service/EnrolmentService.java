@@ -15,11 +15,11 @@ public class EnrolmentService {
     EnrolmentRepository enrolmentRepository;
 
     public List<Enrolment> listEnrolments() {
-        return enrolmentRepository.listEnrolments();
+        return enrolmentRepository.findAll();
     }
 
     public EnrolmentDTO createEnrolment(EnrolmentDTO enrolmentDTO) {
-        if (enrolmentRepository.existsByStudentIDAndCourseID(enrolmentDTO.getStudentID(), enrolmentDTO.getCourseId())) {
+        if (enrolmentRepository.existsByStudentIDAndCourseID(enrolmentDTO.getStudentID(), enrolmentDTO.getCourseID())) {
             throw new ResourceAlreadyExistsException("Resource Already Exists");
         }
         Enrolment e = convertToEntity(enrolmentDTO);
@@ -28,13 +28,11 @@ public class EnrolmentService {
     }
 
     Enrolment convertToEntity(EnrolmentDTO enrolmentDTO) {
-        Enrolment e = new Enrolment(enrolmentDTO.getId(), enrolmentDTO.getStudentID(), enrolmentDTO.getCourseId());
-        return e;
+        return new Enrolment(enrolmentDTO.getId(), enrolmentDTO.getStudentID(), enrolmentDTO.getCourseID());
     }
 
     EnrolmentDTO convertToDTO(Enrolment enrolment) {
-        EnrolmentDTO dto = new EnrolmentDTO(enrolment.getId(), enrolment.getStudentID(), enrolment.getCourseId());
-        return dto;
+        return new EnrolmentDTO(enrolment.getId(), enrolment.getStudentID(), enrolment.getCourseID());
     }
 
 }
