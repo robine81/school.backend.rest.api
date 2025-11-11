@@ -1,43 +1,50 @@
 package com.grupp1.school.backend.rest.api.model;
 
-public class Student {
-    private int studentId;
-    private String studentName;
-    private int studentAge;
-    private String studentEmail;
+import jakarta.persistence.*;
 
-    public Student(int studentId, String studentName, int studentAge, String studentEmail) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.studentAge = studentAge;
-        this.studentEmail = studentEmail;
+@Entity
+@Table(name="students")
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String name;
+    private int age;
+    private String email;
+
+    public Student(Integer studentId, String studentName, int studentAge, String studentEmail) {
+        this.id = studentId;
+        this.name = studentName;
+        this.age = studentAge;
+        this.email = studentEmail;
     }
 
     public Student() {}
 
-    public int getStudentId() { return studentId; }
+    public Integer getStudentId() { return id; }
 
-    public void setStudentId(int studentId) { this.studentId = studentId; }
+    public void setStudentId(Integer studentId) { this.id = studentId; }
 
-    public String getStudentName() { return studentName; }
+    public String getStudentName() { return name; }
 
-    public void setStudentName(String studentName) { this.studentName = studentName; }
+    public void setStudentName(String studentName) { this.name = studentName; }
 
-    public int getStudentAge() { return studentAge; }
+    public int getStudentAge() { return age; }
 
-    public void setStudentAge(int studentAge) { this.studentAge = studentAge; }
+    public void setStudentAge(int studentAge) { this.age = studentAge; }
 
-    public String getStudentEmail() { return studentEmail; }
+    public String getStudentEmail() { return email; }
 
-    public void setStudentEmail(String studentEmail) { this.studentEmail = studentEmail; }
+    public void setStudentEmail(String studentEmail) { this.email = studentEmail; }
 
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + studentId +
-                ", studentName='" + studentName + '\'' +
-                ", studentAge=" + studentAge +
-                ", studentEmail='" + studentEmail + '\'' +
+                "studentId=" + id +
+                ", studentName='" + name + '\'' +
+                ", studentAge=" + age +
+                ", studentEmail='" + email + '\'' +
                 '}';
     }
 }

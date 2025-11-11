@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
     private final StudentService service;
 
@@ -48,7 +48,6 @@ public class StudentController {
 
     @GetMapping("/search")
     public ResponseEntity<List<StudentDTO>> search(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age){
-        System.out.println("Controller - name: '" + name + "', age: " + age);
         List<StudentDTO> results;
 
         if(age != null){
@@ -58,8 +57,6 @@ public class StudentController {
         } else {
             results= service.getAll();
         }
-        System.out.println("Controller - returnerar " + results.size() + " resultat");
         return ResponseEntity.ok(results);
-
     }
 }
