@@ -1,6 +1,12 @@
 package com.grupp1.school.backend.rest.api.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "courses")
 public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Integer teacherId;
@@ -12,6 +18,8 @@ public class Course {
         this.teacherId = teacherId;
         this.maxStudents = maxStudents;
     }
+
+    public Course() {}
 
     public Integer getId() {
         return id;
