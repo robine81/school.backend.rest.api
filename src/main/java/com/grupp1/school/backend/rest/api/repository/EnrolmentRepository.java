@@ -1,6 +1,7 @@
 package com.grupp1.school.backend.rest.api.repository;
 
 import com.grupp1.school.backend.rest.api.model.Enrolment;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.lang.instrument.UnmodifiableClassException;
@@ -8,6 +9,13 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+public interface EnrolmentRepository extends JpaRepository<Enrolment, Long>
+{
+    List<Enrolment> findByStudentIDAndCourseID(Long studentID, Long courseID);
+    boolean existsByStudentIDAndCourseID(Long studentID, Long courseID);
+}
+/*
 @Repository
 public class EnrolmentRepository {
     private List<Enrolment> list = new ArrayList<>();
@@ -38,3 +46,4 @@ public class EnrolmentRepository {
         return Collections.unmodifiableList(this.list);
     }
 }
+*/

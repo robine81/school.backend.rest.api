@@ -3,40 +3,39 @@ package com.grupp1.school.backend.rest.api.model.dto;
 import jakarta.validation.constraints.NotNull;
 
 public class EnrolmentDTO {
+    private Long id;
     @NotNull
-    private Integer id;
+    private Long studentID;
     @NotNull
-    private Integer studentID;
-    @NotNull
-    private Integer courseId;
+    private Long courseID;
 
-    public EnrolmentDTO(Integer id, Integer studentID, Integer courseId) {
+    public EnrolmentDTO(Long id, Long studentID, Long courseID) {
         this.id = id;
         this.studentID = studentID;
-        this.courseId = courseId;
+        this.courseID = courseID;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
-    }
-
-    public Integer getStudentID() {
+    public Long getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(Integer studentID) {
+    public void setStudentID(Long studentID) {
         this.studentID = studentID;
+    }
+
+    public Long getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(Long courseID) {
+        this.courseID = courseID;
     }
 }
