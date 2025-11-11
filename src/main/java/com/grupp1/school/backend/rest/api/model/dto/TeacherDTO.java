@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 public class TeacherDTO {
 
     @Positive(message = "ID must be positive")
-    Integer id;
+    private Integer id;
     @Min(value = 18, message = "A teacher must be 18 or above")
     private int age;
     @NotBlank(message = "Name is mandatory")

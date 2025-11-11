@@ -1,6 +1,5 @@
 package com.grupp1.school.backend.rest.api.controller;
 
-import com.grupp1.school.backend.rest.api.model.Teacher;
 import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
 import com.grupp1.school.backend.rest.api.service.TeacherService;
 import jakarta.validation.Valid;
@@ -19,7 +18,7 @@ public class TeacherController {
     }
 
     @GetMapping
-    public List<Teacher> getAll(){
+    public List<TeacherDTO> getAll(){
         return service.getAll();
     }
 
