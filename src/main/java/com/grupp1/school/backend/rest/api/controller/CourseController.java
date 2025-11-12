@@ -25,17 +25,13 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Integer id){
+    public ResponseEntity<CourseDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
         return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CourseDTO>> search(@RequestParam(required = false) Integer teacherId, @RequestParam(required = false) String name){
-        if (teacherId != null && name != null){
-            return ResponseEntity.badRequest().build();
-        } else if (teacherId != null) {
-            return ResponseEntity.ok(service.getByTeacherId(teacherId));
-        } else if (name != null){
+    public ResponseEntity<List<CourseDTO>> search(@RequestParam(required = false) String name){
+        if (name != null){
             return ResponseEntity.ok(service.getByName(name));
         }
         return ResponseEntity.badRequest().build();
@@ -52,10 +48,15 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Integer id){
+    public ResponseEntity<String> deleteCourse(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
         if (service.deleteById(id)){
             return ResponseEntity.ok("Deletion successful.");
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/enrolled_students")
+    public ResponseEntity<?> getEnrolledStudentsById(@PathVariable Long id){
+        return ResponseEntity.ok(service.getEnrolledStudentsById(id));
     }
 }

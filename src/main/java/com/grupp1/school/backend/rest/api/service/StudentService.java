@@ -34,7 +34,7 @@ public class StudentService {
 
     public StudentDTO getById(Integer id) {
         return repository.findById(id)
-            .map(this::toDTO)
+            .map(StudentService::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
@@ -100,7 +100,7 @@ public class StudentService {
         return repository.existsByStudentEmail(email);
     }
 
-    private StudentDTO toDTO(Student student){
+    static public StudentDTO toDTO(Student student){
         return new StudentDTO(student.getStudentId(), student.getStudentName(), student.getStudentEmail(), student.getStudentAge());
     }
 

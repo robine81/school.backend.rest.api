@@ -9,9 +9,8 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
-    private Integer teacherId;
     private Integer maxStudents;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
@@ -25,16 +24,15 @@ public class Course {
         this.enrolments = enrolments;
     }
 
-    public Course(Integer id, String name, Integer teacherId, Integer maxStudents) {
+    public Course(Long id, String name, Integer maxStudents) {
         this.id = id;
         this.name = name;
-        this.teacherId = teacherId;
         this.maxStudents = maxStudents;
     }
 
     public Course() {}
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -42,24 +40,16 @@ public class Course {
         return name;
     }
 
-    public Integer getTeacherId() {
-        return teacherId;
-    }
-
     public Integer getMaxStudents() {
         return maxStudents;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
     }
 
     public void setMaxStudents(Integer maxStudents) {

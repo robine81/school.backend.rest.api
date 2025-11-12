@@ -3,10 +3,13 @@ package com.grupp1.school.backend.rest.api.service;
 import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Course;
+import com.grupp1.school.backend.rest.api.model.Enrolment;
 import com.grupp1.school.backend.rest.api.model.dto.CourseDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +31,8 @@ public class CourseService {
         return repository.findAll().stream().map(this::mapEntityToDto).toList();
     }
 
-    public CourseDTO getById(Integer id){
+    public CourseDTO getById(Long id){
         return repository.findById(id).map(this::mapEntityToDto).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + id));
-    }
-
-    public List<CourseDTO> getByTeacherId(Integer teacherId){
-        return repository.findByTeacherId(teacherId).stream().map(this::mapEntityToDto).toList();
     }
 
     public List<CourseDTO> getByName(String name){
@@ -45,9 +44,6 @@ public class CourseService {
         if(dto.getName() != null){
             existing.setName(dto.getName());
         }
-        if(dto.getTeacherId() != null){
-            existing.setTeacherId(dto.getTeacherId());
-        }
         if(dto.getMaxStudents() != null){
             existing.setMaxStudents(dto.getMaxStudents());
         }
@@ -56,7 +52,7 @@ public class CourseService {
         return mapEntityToDto(existing);
     }
 
-    public boolean deleteById(Integer id){
+    public boolean deleteById(Long id){
         if (repository.existsById(id)){
             repository.deleteById(id);
             return true;
@@ -64,11 +60,22 @@ public class CourseService {
         return false;
     }
 
+    public List<StudentDTO> getEnrolledStudentsById(Long id){
+        List<StudentDTO> students = new ArrayList<>();
+        Optional<Course> course = repository.findById(id);
+        if (course.isPresent()){
+            students.addAll(course.get().getEnrolments().stream()
+                    .map(Enrolment::getStudent)
+                    .map(StudentService::toDTO).toList());
+        }
+        return students;
+    }
+
     private Course mapDtoToEntity(CourseDTO dto){
-        return new Course(dto.getId(), dto.getName(), dto.getTeacherId(), dto.getMaxStudents());
+        return new Course(dto.getId(), dto.getName(), dto.getMaxStudents());
     }
 
     private CourseDTO mapEntityToDto(Course entity){
-        return new CourseDTO(entity.getId(), entity.getName(), entity.getTeacherId(), entity.getMaxStudents());
+        return new CourseDTO(entity.getId(), entity.getName(), entity.getMaxStudents());
     }
 }

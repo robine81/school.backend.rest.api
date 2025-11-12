@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, Integer> {
+public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    List<Course> findByTeacherId(Integer teacherId);
+    List<Course> findByTeacherId(Long teacherId);
 
     List<Course> findByName(String name);
     boolean existsByName(String name);

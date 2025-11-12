@@ -34,7 +34,7 @@ public class EnrolmentService {
 
     public EnrolmentResponseDTO createEnrolment(EnrolmentRequestDTO enrolmentRequestDTO) {
 
-        if (enrolmentRepository.existsByStudentStudentIdAndCourseId(Integer.valueOf(enrolmentRequestDTO.getStudentID().intValue()), Integer.valueOf(enrolmentRequestDTO.getCourseID().intValue()))) {
+        if (enrolmentRepository.existsByStudentStudentIdAndCourseId(enrolmentRequestDTO.getStudentID().intValue(), Integer.valueOf(enrolmentRequestDTO.getCourseID().intValue()))) {
             throw new ResourceAlreadyExistsException("Resource Already Exists");
         }
         Enrolment e = convertToEntity(enrolmentRequestDTO);
@@ -45,12 +45,12 @@ public class EnrolmentService {
     Enrolment convertToEntity(EnrolmentRequestDTO enrolmentRequestDTO) {
         Enrolment e = new Enrolment();
         e.setId(enrolmentRequestDTO.getId());
-        Optional<Student> student = studentRepository.findById(Integer.valueOf(enrolmentRequestDTO.getStudentID().intValue()));
+        Optional<Student> student = studentRepository.findById(enrolmentRequestDTO.getStudentID().intValue());
         if (!student.isPresent()) {
             throw new ResourceNotFoundException("Student not found");
         }
         e.setStudent(student.get());
-        Optional<Course> course = courseRepository.findById(Integer.valueOf(enrolmentRequestDTO.getCourseID().intValue()));
+        Optional<Course> course = courseRepository.findById(enrolmentRequestDTO.getCourseID());
         if (!course.isPresent()) {
             throw new ResourceNotFoundException("Course not found");
         }
@@ -61,7 +61,7 @@ public class EnrolmentService {
     EnrolmentResponseDTO convertToDTO(Enrolment enrolment) {
         EnrolmentResponseDTO e = new EnrolmentResponseDTO();
         e.setId(enrolment.getId());
-        e.setCourseId(Long.valueOf(enrolment.getCourse().getId()));
+        e.setCourseId(enrolment.getCourse().getId());
         e.setStudentId(Long.valueOf(enrolment.getStudent().getStudentId()));
         return e;
     }
