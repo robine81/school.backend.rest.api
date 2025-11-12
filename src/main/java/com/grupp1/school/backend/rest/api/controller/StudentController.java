@@ -1,5 +1,7 @@
 package com.grupp1.school.backend.rest.api.controller;
 
+import com.grupp1.school.backend.rest.api.model.Student;
+import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.service.StudentService;
 import jakarta.validation.Valid;
@@ -60,5 +62,9 @@ public class StudentController {
         }
         return ResponseEntity.ok(results);
     }
-}
 
+    @GetMapping("/enrolments/{id}")
+    public List<EnrolmentResponseDTO> listEnrolments (@PathVariable int id) {
+        return service.findEnrolmentsByStudentId(id);
+    }
+}

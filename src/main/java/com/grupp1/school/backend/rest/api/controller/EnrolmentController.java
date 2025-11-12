@@ -1,7 +1,7 @@
 package com.grupp1.school.backend.rest.api.controller;
 
-import com.grupp1.school.backend.rest.api.model.Enrolment;
-import com.grupp1.school.backend.rest.api.model.dto.EnrolmentDTO;
+import com.grupp1.school.backend.rest.api.model.dto.EnrolmentRequestDTO;
+import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
 import com.grupp1.school.backend.rest.api.service.EnrolmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,12 @@ public class EnrolmentController {
     private EnrolmentService enrolmentService;
 
     @PostMapping("/create")
-    public ResponseEntity<EnrolmentDTO> create(@Valid @RequestBody EnrolmentDTO enrolment) {
+    public ResponseEntity<?> create(@Valid @RequestBody EnrolmentRequestDTO enrolment) {
         return ResponseEntity.ok(enrolmentService.createEnrolment(enrolment));
     }
 
-    @GetMapping("/listall")
-    public ResponseEntity<List<EnrolmentDTO>> listAll() {
+    @GetMapping("/")
+    public ResponseEntity<List<?>> listAll() {
         return ResponseEntity.ok(enrolmentService.listEnrolments());
     }
 }
-

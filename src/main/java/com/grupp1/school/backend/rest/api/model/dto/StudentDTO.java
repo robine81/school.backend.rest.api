@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 @JsonPropertyOrder({"id", "name", "email", "age"})
 public class StudentDTO {
-    @NotNull
+
     private Integer id;
     @NotBlank(message= "Student name must be specified")
     private String name;
@@ -61,4 +61,3 @@ public class StudentDTO {
                 '}';
     }
 }
-

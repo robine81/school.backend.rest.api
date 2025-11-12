@@ -1,7 +1,9 @@
 package com.grupp1.school.backend.rest.api.service;
 
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
+import com.grupp1.school.backend.rest.api.model.Enrolment;
 import com.grupp1.school.backend.rest.api.model.Student;
+import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
 import com.grupp1.school.backend.rest.api.repository.StudentRepositoryOld;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -117,5 +120,23 @@ public class StudentService {
         }
         return student;
     }
-}
 
+    public List<EnrolmentResponseDTO> findEnrolmentsByStudentId(Integer studentId) {
+        Optional<Student> existing = repository.findById(studentId);
+        if(existing.isPresent()){
+            return existing.get().getEnrolments()
+                    .stream()
+                    .map(e -> {
+                        EnrolmentResponseDTO dto = new EnrolmentResponseDTO();
+                        dto.setId(Long.valueOf(e.getId()));
+                        dto.setCourseId(Long.valueOf(e.getCourse().getId().intValue()));
+                        dto.setStudentId(Long.valueOf(e.getStudent().getStudentId().intValue()));
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        }
+        else {
+            return List.of();
+        }
+    }
+}

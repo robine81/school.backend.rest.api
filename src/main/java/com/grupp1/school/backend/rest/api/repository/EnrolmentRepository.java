@@ -2,18 +2,16 @@ package com.grupp1.school.backend.rest.api.repository;
 
 import com.grupp1.school.backend.rest.api.model.Enrolment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.lang.instrument.UnmodifiableClassException;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public interface EnrolmentRepository extends JpaRepository<Enrolment, Long>
 {
-    List<Enrolment> findByStudentIDAndCourseID(Long studentID, Long courseID);
-    boolean existsByStudentIDAndCourseID(Long studentID, Long courseID);
+    List<Enrolment> findByStudentStudentIdAndCourseId(Integer studentId, Integer courseId);
+
+    //boolean existsByStudentAndCourse(Student student, Course course);
+    boolean existsByStudentStudentIdAndCourseId(Integer studentId, Integer courseId);
 }
 /*
 @Repository
@@ -37,7 +35,7 @@ public class EnrolmentRepository {
                 .findFirst();
     }
 
-    public boolean existsByStudentIDAndCourseID(Integer studentID, Integer courseID) {
+    public boolean existsByStudentIdAndCourseId(Integer studentID, Integer courseID) {
         return getByStudentIDAndCourseID(studentID, courseID).isPresent();
     }
 

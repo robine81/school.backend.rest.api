@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="students")
 public class Student {
@@ -19,11 +21,22 @@ public class Student {
     @Column(name = "age")
     private int studentAge;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Enrolment> enrolments;
+
     public Student(Integer studentId, String studentName, int studentAge, String studentEmail) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.studentAge = studentAge;
         this.studentEmail = studentEmail;
+    }
+
+    public List<Enrolment> getEnrolments() {
+        return enrolments;
+    }
+
+    public void setEnrolments(List<Enrolment> enrolments) {
+        this.enrolments = enrolments;
     }
 
     public Student() {}

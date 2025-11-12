@@ -20,7 +20,7 @@ public class CourseService {
 
     public CourseDTO create(CourseDTO dto){
         Course entity = mapDtoToEntity(dto);
-        if (repository.existsById(dto.getId())) throw new ResourceAlreadyExistsException("Course already exists.");
+        if (repository.existsByName(dto.getName())) throw new ResourceAlreadyExistsException("Course already exists.");
         return mapEntityToDto(repository.save(entity));
     }
 
@@ -72,4 +72,3 @@ public class CourseService {
         return new CourseDTO(entity.getId(), entity.getName(), entity.getTeacherId(), entity.getMaxStudents());
     }
 }
-
