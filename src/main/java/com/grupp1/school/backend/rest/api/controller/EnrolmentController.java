@@ -22,7 +22,8 @@ public class EnrolmentController {
     }
 
     @GetMapping("/listall")
-    public ResponseEntity<List<Enrolment>> listAll() {
+    public ResponseEntity<List<EnrolmentDTO>> listAll() {
         return ResponseEntity.ok(enrolmentService.listEnrolments());
     }
 }
+

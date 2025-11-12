@@ -24,7 +24,7 @@ public class TeacherController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable int id){
-        return ResponseEntity.ok(service.getById(id));
+        return service.getById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

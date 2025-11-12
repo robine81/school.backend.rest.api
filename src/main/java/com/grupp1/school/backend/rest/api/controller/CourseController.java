@@ -51,6 +51,7 @@ public class CourseController {
         return ResponseEntity.ok(service.update(dto));
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Integer id){
         if (service.deleteById(id)){

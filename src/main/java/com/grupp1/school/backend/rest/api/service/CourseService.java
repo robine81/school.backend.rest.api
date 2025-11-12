@@ -72,3 +72,4 @@ public class CourseService {
         return new CourseDTO(entity.getId(), entity.getName(), entity.getTeacherId(), entity.getMaxStudents());
     }
 }
+

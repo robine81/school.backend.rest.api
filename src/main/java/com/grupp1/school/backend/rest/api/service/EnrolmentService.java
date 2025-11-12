@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EnrolmentService {
     @Autowired
     EnrolmentRepository enrolmentRepository;
 
-    public List<Enrolment> listEnrolments() {
-        return enrolmentRepository.findAll();
+    public List<EnrolmentDTO> listEnrolments() {
+        return enrolmentRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public EnrolmentDTO createEnrolment(EnrolmentDTO enrolmentDTO) {
@@ -36,3 +39,4 @@ public class EnrolmentService {
     }
 
 }
+

@@ -1,7 +1,5 @@
 package com.grupp1.school.backend.rest.api.service;
 
-import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
-import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Teacher;
 import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
 import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
@@ -24,23 +22,20 @@ public class TeacherService {
                 .toList();
     }
 
-    public TeacherDTO getById(int id){
-        return repository.findById(id).map(this::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find teacher with id " + id));
+    public Optional<TeacherDTO> getById(int id){
+        return repository.findById(id).map(this::toDTO);
     }
 
-    public TeacherDTO getByEmail(String email){
-        return repository.findByEmail(email).map(this::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find teacher with email " + email));
+    public Optional<TeacherDTO> getByEmail(String email){
+        return repository.findByEmail(email).map(this::toDTO);
     }
 
     public List<TeacherDTO> getByName(String name){
         return repository.findByName(name).stream().map(this::toDTO).toList();
     }
 
-    public TeacherDTO addTeacher(TeacherDTO dto){
-        if(repository.existsById(dto.getId())) throw new ResourceAlreadyExistsException("This teacher already exists");
-        return  toDTO(repository.save(toEntity(dto)));
+    public TeacherDTO addTeacher(TeacherDTO teacher){
+        return  toDTO(repository.save(toEntity(teacher)));
     }
 
     public boolean deleteById(int id){
