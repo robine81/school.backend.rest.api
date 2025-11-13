@@ -19,6 +19,8 @@ public class TeacherRequestDTO {
 
     private List<Long> courseList;
 
+    public TeacherRequestDTO(){}
+
     public TeacherRequestDTO(Long id, String name, String email, List<Long> courseList){
         this.id = id;
         this.name = name;
@@ -26,12 +28,9 @@ public class TeacherRequestDTO {
         this.courseList = courseList;
     }
 
-    public TeacherRequestDTO(){}
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,7 +38,6 @@ public class TeacherRequestDTO {
     public String getName () {
         return name;
     }
-
     public void setName (String name) {
         this.name = name;
     }
@@ -47,7 +45,6 @@ public class TeacherRequestDTO {
     public String getEmail () {
         return email;
     }
-
     public void setEmail (String email) {
         this.email = email;
     }
@@ -55,16 +52,7 @@ public class TeacherRequestDTO {
     public List<Long> getCourseList() {
         return courseList;
     }
-
     public void setCourseList(List<Long> courseList) {
         this.courseList = courseList;
-    }
-
-    @Override
-    public String toString () {
-        return "TeacherDTO{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }
