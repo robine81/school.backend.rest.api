@@ -1,14 +1,14 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
+import com.grupp1.school.backend.rest.api.model.Course;
 import jakarta.validation.constraints.*;
 
-public class TeacherDTO {
+import java.util.List;
+
+public class TeacherRequestDTO {
 
     @Positive(message = "ID must be positive")
-    private Integer id;
-
-    @Min(value = 18, message = "A teacher must be 18 or above")
-    private int age;
+    private Long id;
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, message = "name must contain at least 3 characters")
@@ -18,29 +18,25 @@ public class TeacherDTO {
     @NotBlank(message = "E-mail is mandatory")
     private String email;
 
-//    public TeacherDTO(){}
+    private List<Long> courseList;
 
-    public TeacherDTO(Integer id, int age, String name, String email){
+    public TeacherRequestDTO(Long id, String name, String email, List<Long> courseList){
         this.id = id;
-        this.age = age;
         this.name = name;
         this.email = email;
+        this.courseList = courseList;
+
+        //TODO add courses or refactor
     }
 
-    public Integer getId() {
+    public TeacherRequestDTO(){}
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getAge () {
-        return age;
-    }
-
-    public void setAge (int age) {
-        this.age = age;
     }
 
     public String getName () {
@@ -59,10 +55,17 @@ public class TeacherDTO {
         this.email = email;
     }
 
+    public List<Long> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Long> courseList) {
+        this.courseList = courseList;
+    }
+
     @Override
     public String toString () {
         return "TeacherDTO{" +
-                "age=" + age +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';

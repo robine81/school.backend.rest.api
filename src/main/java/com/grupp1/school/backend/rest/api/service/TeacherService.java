@@ -3,8 +3,10 @@ package com.grupp1.school.backend.rest.api.service;
 import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Teacher;
-import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherRequestDTO;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
+import com.grupp1.school.backend.rest.api.service.mapper.TeacherMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,32 +20,37 @@ public class TeacherService {
         this.repository = repository;
     }
 
-    public List<TeacherDTO> getAll(){
+    public List<TeacherResponseDTO> getAll(){
         return repository.findAll()
-                .stream().map(this::toDTO)
+                .stream().map(TeacherMapper::MapEntityToResponse)
                 .toList();
     }
 
-    public TeacherDTO getById(int id){
-        return repository.findById(id).map(this::toDTO)
+    public TeacherResponseDTO getById(Long id){
+        return repository.findById(id).map(TeacherMapper::MapEntityToResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Couldn't find teacher with id " + id));
     }
 
-    public TeacherDTO getByEmail(String email){
-        return repository.findByEmail(email).map(this::toDTO)
+    public TeacherResponseDTO getByEmail(String email){
+        return repository.findByEmail(email).map(TeacherMapper::MapEntityToResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Couldn't find teacher with email " + email));
     }
 
-    public List<TeacherDTO> getByName(String name){
-        return repository.findByName(name).stream().map(this::toDTO).toList();
+    public List<TeacherResponseDTO> getByName(String name){
+        return repository.findByName(name).stream().map(TeacherMapper::MapEntityToResponse).toList();
     }
 
-    public TeacherDTO addTeacher(TeacherDTO dto){
-        if(repository.existsById(dto.getId())) throw new ResourceAlreadyExistsException("This teacher already exists");
-        return  toDTO(repository.save(toEntity(dto)));
+    //TODO refactor this method
+    public TeacherResponseDTO addTeacher(TeacherRequestDTO dto){
+        if(repository.existsById(dto.getId())) {
+            throw new ResourceAlreadyExistsException("This teacher already exists");
+        } else {
+            Teacher saved = repository.save(TeacherMapper.MapRequestToEntity(dto));
+            return  TeacherMapper.MapEntityToResponse(saved);
+        }
     }
 
-    public boolean deleteById(int id){
+    public boolean deleteById(Long id){
         if(repository.existsById(id)){
             repository.deleteById(id);
             return true;
@@ -51,7 +58,7 @@ public class TeacherService {
         return false;
     }
 
-    public TeacherDTO update(TeacherDTO dto){
+    public TeacherResponseDTO update(TeacherRequestDTO dto){
 
         Optional<Teacher> opt = repository.findById(dto.getId());
 
@@ -59,20 +66,12 @@ public class TeacherService {
             Teacher existing = opt.get();
             existing.setName(dto.getName());
             existing.setEmail(dto.getEmail());
-            existing.setAge(dto.getAge());
             repository.save(existing);
-            return toDTO(existing);
+            return TeacherMapper.MapEntityToResponse(existing);
         }
 
         return null;
     }
 
-    private Teacher toEntity(TeacherDTO dto){
-        return new Teacher(dto.getId(), dto.getAge(), dto.getName(), dto.getEmail());
-    }
 
-
-    private TeacherDTO toDTO(Teacher teacher){
-        return new TeacherDTO(teacher.getId(), teacher.getAge(), teacher.getName(), teacher.getEmail());
-    }
 }

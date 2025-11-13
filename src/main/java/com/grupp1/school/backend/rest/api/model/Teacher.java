@@ -10,49 +10,41 @@ public class Teacher {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Integer id;
-   private int age;
+   private Long id;
    private String name;
    private String email;
+   private int age;
 
    @OneToMany(mappedBy = "teacher", cascade = CascadeType.DETACH)
-   private List<Course> courses;
+   private List<Course> courseList = List.of();
+
+   public Teacher(Long id, String name, String email, List<Course> courseList){
+       this.id = id;
+       this.name = name;
+       this.email = email;
+       this.courseList = courseList;
+   }
 
    public Teacher(){}
 
+    public Teacher(Long id, String name, String email) {
+    }
+
     public List<Course> getCourses() {
-        return courses;
-    }
+        return courseList;
+   }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
+   public void setCourses(List<Course> courses) {
+       this.courseList = courses;
+   }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Teacher(Integer id, int age, String name, String email){
-       this.id = id;
-       this.age = age;
-       this.name = name;
-       this.email = email;
-    }
 
-    public Integer getId () {
+    public Long getId () {
         return id;
-    }
-
-    public void setId (int id) {
-        this.id = id;
-    }
-
-    public int getAge () {
-        return age;
-    }
-
-    public void setAge (int age) {
-        this.age = age;
     }
 
     public String getName () {
@@ -75,7 +67,6 @@ public class Teacher {
     public String toString () {
         return "Teacher{" +
                 "id=" + id +
-                "age=" + age +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
