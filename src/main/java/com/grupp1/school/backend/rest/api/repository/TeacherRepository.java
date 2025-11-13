@@ -8,15 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TeacherRepository extends JpaRepository<Teacher,Integer> {
+public interface TeacherRepository extends JpaRepository<Teacher,Long> {
 
     List<Teacher> findByName(String name);
 
     Optional<Teacher> findByEmail(String email);
 
     boolean existsByEmail(String email);
-    // Needed due to changing id to Long
-    Optional<Teacher> findById(Long id);
-    void deleteById(Long id);
-    boolean existsById(Long id);
 }
