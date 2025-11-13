@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 @JsonPropertyOrder({"id", "name", "email", "age"})
 public class StudentResponseDTO {
 
-    Integer id;
+    Long id;
     String name;
     String email;
     int age;
@@ -22,7 +22,7 @@ public class StudentResponseDTO {
         this.age = studentAge;
     }
 
-    public StudentResponseDTO(Integer id, String name, String email, int age) {
+    public StudentResponseDTO(Long id, String name, String email, int age) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -30,8 +30,8 @@ public class StudentResponseDTO {
     }
 
     @JsonProperty("id")
-    public Integer getStudentId() { return id; }
-    public void setStudentId(Integer id) { this.id = id; }
+    public Long getStudentId() { return id; }
+    public void setStudentId(Long id) { this.id = id; }
 
     @JsonProperty("name")
     public String getStudentName() { return name; }

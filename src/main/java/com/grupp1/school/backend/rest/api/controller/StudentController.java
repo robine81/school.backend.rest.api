@@ -30,13 +30,13 @@ public class StudentController {
     public ResponseEntity<List<StudentResponseDTO>> getAll() { return ResponseEntity.ok(service.getAll()); }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponseDTO> getById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable int id) {
+    public ResponseEntity<StudentResponseDTO> getById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PutMapping({"/{id}"})
     public ResponseEntity<StudentResponseDTO> update(
-            @PathVariable int id,
+            @PathVariable Long id,
             @Valid @RequestBody StudentRequestDTO studentRequestDTO){
         return service.update(id, studentRequestDTO)
                 .map(ResponseEntity::ok)
@@ -44,7 +44,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable int id){
+    public ResponseEntity<Void> delete(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
         boolean removed = service.delete(id);
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
@@ -72,12 +72,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/enrolments")
-    public ResponseEntity<List<EnrolmentResponseDTO>> listStudentsEnrolments(@PathVariable int id) {
+    public ResponseEntity<List<EnrolmentResponseDTO>> listStudentsEnrolments(@PathVariable Long id) {
         return ResponseEntity.ok(service.findEnrolmentsByStudentId(id));
     }
 
     @GetMapping("/enrolments/{id}")
-    public List<EnrolmentResponseDTO> listEnrolments (@PathVariable int id) {
+    public List<EnrolmentResponseDTO> listEnrolments (@PathVariable Long id) {
         return service.findEnrolmentsByStudentId(id);
     }
 }

@@ -45,7 +45,7 @@ public class EnrolmentService {
     Enrolment convertToEntity(EnrolmentRequestDTO enrolmentRequestDTO) {
         Enrolment e = new Enrolment();
         e.setId(enrolmentRequestDTO.getId());
-        Optional<Student> student = studentRepository.findById(enrolmentRequestDTO.getStudentID().intValue());
+        Optional<Student> student = studentRepository.findById(enrolmentRequestDTO.getStudentID());
         if (!student.isPresent()) {
             throw new ResourceNotFoundException("Student not found");
         }
