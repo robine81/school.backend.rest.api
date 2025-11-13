@@ -5,7 +5,7 @@ import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Course;
 import com.grupp1.school.backend.rest.api.model.Enrolment;
 import com.grupp1.school.backend.rest.api.model.dto.CourseRequestDTO;
-import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +60,13 @@ public class CourseService {
         return false;
     }
 
-    public List<StudentDTO> getEnrolledStudentsById(Long id){
-        List<StudentDTO> students = new ArrayList<>();
+    public List<StudentResponseDTO> getEnrolledStudentsById(Long id){
+        List<StudentResponseDTO> students = new ArrayList<>();
         Optional<Course> course = repository.findById(id);
         if (course.isPresent()){
             students.addAll(course.get().getEnrolments().stream()
                     .map(Enrolment::getStudent)
-                    .map(StudentService::toDTO).toList());
+                    .map(StudentService::toResponseDTO).toList());
         }
         return students;
     }

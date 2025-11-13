@@ -5,29 +5,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @JsonPropertyOrder({"id", "name", "email", "age"})
-public class StudentDTO {
+public class StudentResponseDTO {
 
-    private Integer id;
-    @NotBlank(message= "Student name must be specified")
-    private String name;
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Invalid format")
-    private String email;
-    @Min(18)
-    private int age;
+    Integer id;
+    String name;
+    String email;
+    int age;
 
-    public StudentDTO() {}
+    public StudentResponseDTO() {}
 
-    public StudentDTO(String studentName, int studentAge, String studentEmail) {
+    public StudentResponseDTO(String studentName, int studentAge, String studentEmail) {
         this.name = studentName;
         this.email = studentEmail;
         this.age = studentAge;
     }
 
-    public StudentDTO(Integer id, String name, String email, int age) {
+    public StudentResponseDTO(Integer id, String name, String email, int age) {
         this.id = id;
         this.name = name;
         this.email = email;

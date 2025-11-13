@@ -3,7 +3,8 @@ package com.grupp1.school.backend.rest.api.service;
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
-import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentRequestDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,80 +20,80 @@ public class StudentService {
 
     public StudentService(StudentRepository repository) { this.repository = repository; }
 
-    public List<StudentDTO> getAll() {
+    public List<StudentResponseDTO> getAll() {
         List<Student> students = repository.findAll();
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s : students)
         {
-            studentsDTO.add(toDTO(s));
+            studentsDTO.add(toResponseDTO(s));
         }
         return studentsDTO;
     }
 
-    public StudentDTO getById(Integer id) {
+    public StudentResponseDTO getById(Integer id) {
         return repository.findById(id)
-            .map(StudentService::toDTO)
+            .map(StudentService::toResponseDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
-    public List<StudentDTO> findByName(String name) {
+    public List<StudentResponseDTO> findByName(String name) {
         List<Student> students = repository.findByStudentName(name);
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students) {
-            studentsDTO.add(toDTO(s));
+            studentsDTO.add(toResponseDTO(s));
         }
         return studentsDTO;
     }
 
-    public List<StudentDTO> findByEmail(String email) {
+    public List<StudentResponseDTO> findByEmail(String email) {
         List<Student> students = repository.findByStudentEmail(email);
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
         {
-            studentsDTO.add(toDTO(s));
+            studentsDTO.add(toResponseDTO(s));
         }
         return studentsDTO;
     }
 
-    public List<StudentDTO> findByNameAndAge(String name, int age) {
+    public List<StudentResponseDTO> findByNameAndAge(String name, int age) {
         List<Student> students = repository. findByStudentNameContainingIgnoreCaseAndStudentAge(name, age);
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
         {
-            studentsDTO.add(toDTO(s));
+            studentsDTO.add(toResponseDTO(s));
         }
         return studentsDTO;
     }
 
-    public List<StudentDTO> findByAge(int age) {
+    public List<StudentResponseDTO> findByAge(int age) {
         List<Student> students = repository.findByStudentAge(age);
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
         {
-            studentsDTO.add(toDTO(s));
+            studentsDTO.add(toResponseDTO(s));
         }
         return studentsDTO;
     }
 
-    public List<StudentDTO> findByAgeBetween(int min, int max){
+    public List<StudentResponseDTO> findByAgeBetween(int min, int max){
         return repository.findByStudentAgeBetween(min, max)
                 .stream()
-                .map(StudentService::toDTO)
+                .map(StudentService::toResponseDTO)
                 .toList();
     }
 
 
-    public StudentDTO create(StudentDTO request) {
-        return toDTO(repository.save(toEntity(request)));
+    public StudentResponseDTO create(StudentRequestDTO request) {
+        return toResponseDTO(repository.save(toEntity(request)));
 
     }
 
-    public StudentDTO update(int id, StudentDTO request) {
+    public StudentResponseDTO update(int id, StudentRequestDTO request) {
         Optional<Student> existing = repository.findById(id);
 
         if(existing.isPresent()){
@@ -100,7 +101,7 @@ public class StudentService {
             existing.get().setStudentName(request.getStudentName());
             existing.get().setStudentEmail(request.getStudentEmail());
             existing.get().setStudentAge(request.getStudentAge());
-            return toDTO(existing.get());
+            return toResponseDTO(existing.get());
         }
         return null;
     }
@@ -117,11 +118,11 @@ public class StudentService {
         return repository.existsByStudentEmail(email);
     }
 
-    static public StudentDTO toDTO(Student student){
-        return new StudentDTO(student.getStudentId(), student.getStudentName(), student.getStudentEmail(), student.getStudentAge());
+    static public StudentResponseDTO toResponseDTO(Student student){
+        return new StudentResponseDTO(student.getStudentId(), student.getStudentName(), student.getStudentEmail(), student.getStudentAge());
     }
 
-    private Student toEntity(StudentDTO dto){
+    private Student toEntity(StudentRequestDTO dto){
         Student student = new Student();
 
         student.setStudentId(dto.getStudentId());

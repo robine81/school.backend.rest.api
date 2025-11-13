@@ -1,9 +1,11 @@
 package com.grupp1.school.backend.rest.api.controller;
 
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
-import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentRequestDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.service.StudentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,45 +18,45 @@ public class StudentController {
 
     public StudentController(StudentService service) { this.service = service; }
 
+    @PostMapping("/create")
+    public ResponseEntity<StudentResponseDTO> create(@Valid @RequestBody StudentRequestDTO studentDTO){
+        if(service.emailExists(studentDTO.getStudentEmail())){
+            return ResponseEntity.status(409).build();
+        }
+        return ResponseEntity.status(201).body(service.create(studentDTO));
+    }
+
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getALl() { return ResponseEntity.ok(service.getAll()); }
+    public ResponseEntity<List<StudentResponseDTO>> getALl() { return ResponseEntity.ok(service.getAll()); }
 
     @GetMapping("{id}")
-    public ResponseEntity<StudentDTO> getById(@Valid @PathVariable int id) {
+    public ResponseEntity<StudentResponseDTO> getById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping("/email")
-    public ResponseEntity<List<StudentDTO>> getByEmail(@Valid @RequestParam String email) {
+    public ResponseEntity<List<StudentResponseDTO>> getByEmail(@Valid @RequestParam String email) {
         return ResponseEntity.ok(service.findByEmail(email));
     }
 
     @GetMapping("/name_age")
-    public ResponseEntity<List<StudentDTO>> getByNameAndAge(@RequestParam String name, @RequestParam int age) {
+    public ResponseEntity<List<StudentResponseDTO>> getByNameAndAge(@RequestParam String name, @RequestParam int age) {
         return ResponseEntity.ok(service.findByNameAndAge(name, age));
     }
 
     @GetMapping("/age")
-    public ResponseEntity<List<StudentDTO>> getByAge(@Valid @RequestParam int age) {
+    public ResponseEntity<List<StudentResponseDTO>> getByAge(@Valid @RequestParam int age) {
         return ResponseEntity.ok(service.findByAge(age));
     }
 
     @GetMapping("/age_range")
-    public ResponseEntity<List<StudentDTO>> getByAgeBetween(@RequestParam int min, @RequestParam int max){
+    public ResponseEntity<List<StudentResponseDTO>> getByAgeBetween(@RequestParam int min, @RequestParam int max){
         return ResponseEntity.ok(service.findByAgeBetween(min, max));
     }
 
-    @PostMapping
-    public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody StudentDTO studentDTO){
-        if(service.emailExists(studentDTO.getStudentEmail())){
-            return ResponseEntity.status(409).build();
-        }
-       return ResponseEntity.status(201).body(service.create(studentDTO));
-    }
-
     @PutMapping({"/{id}"})
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable int id, @Valid @RequestBody StudentDTO studentDTO){
-        StudentDTO result = service.update(id, studentDTO);
+    public ResponseEntity<StudentResponseDTO> update(@PathVariable int id, @Valid @RequestBody StudentRequestDTO studentrequestDTO){
+        StudentResponseDTO result = service.update(id, studentrequestDTO);
         if(result != null){
             return ResponseEntity.ok(result);
         } else {
@@ -63,14 +65,14 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id){
+    public ResponseEntity<Void> delete(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable int id){
         boolean removed = service.delete(id);
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<StudentDTO>> find(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age){
-        List<StudentDTO> results;
+    public ResponseEntity<List<StudentResponseDTO>> find(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age){
+        List<StudentResponseDTO> results;
 
         if(name != null && age != null){
             results = service.findByNameAndAge(name, age);
