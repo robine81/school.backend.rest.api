@@ -28,7 +28,7 @@ public class EnrolmentService {
 
     public List<EnrolmentResponseDTO> listEnrolments() {
         return enrolmentRepository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(e -> e.toResponseDTO())
                 .collect(Collectors.toList());
     }
 
@@ -39,7 +39,7 @@ public class EnrolmentService {
         }
         Enrolment e = convertToEntity(enrolmentRequestDTO);
         Enrolment created = enrolmentRepository.save(e);
-        return convertToDTO(created);
+        return created.toResponseDTO();
     }
 
     Enrolment convertToEntity(EnrolmentRequestDTO enrolmentRequestDTO) {
@@ -55,14 +55,6 @@ public class EnrolmentService {
             throw new ResourceNotFoundException("Course not found");
         }
         e.setCourse(course.get());
-        return e;
-    }
-
-    EnrolmentResponseDTO convertToDTO(Enrolment enrolment) {
-        EnrolmentResponseDTO e = new EnrolmentResponseDTO();
-        e.setId(enrolment.getId());
-        e.setCourseId(enrolment.getCourse().getId());
-        e.setStudentId(Long.valueOf(enrolment.getStudent().getStudentId()));
         return e;
     }
 
