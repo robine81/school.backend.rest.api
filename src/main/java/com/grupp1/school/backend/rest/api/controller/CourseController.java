@@ -29,11 +29,8 @@ public class CourseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<?>> search(@RequestParam(required = false) String name){
-        if (name != null){
-            return ResponseEntity.ok(service.getByName(name));
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<List<?>> search(@RequestParam String name){
+        return ResponseEntity.ok(service.searchByName(name));
     }
 
     @PostMapping

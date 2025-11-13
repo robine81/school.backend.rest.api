@@ -8,6 +8,7 @@ import com.grupp1.school.backend.rest.api.model.dto.CourseRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.CourseResponseDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
+import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
 import com.grupp1.school.backend.rest.api.service.mapper.CourseMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,17 @@ import java.util.Optional;
 @Service
 public class CourseService {
     private final CourseRepository repository;
+    private final TeacherRepository teacherRepository;
 
-    public CourseService(CourseRepository repository){
+    public CourseService(CourseRepository repository, TeacherRepository teacherRepository){
         this.repository = repository;
+        this.teacherRepository = teacherRepository;
     }
 
     public CourseResponseDTO create(CourseRequestDTO dto){
         Course entity = CourseMapper.toEntity(dto);
-        if (repository.existsByName(dto.getName())) throw new ResourceAlreadyExistsException("Course with name " + dto.getName() + " already exists.");
+        if (repository.existsByName(dto.getName()))
+            throw new ResourceAlreadyExistsException("Course with name " + dto.getName() + " already exists.");
         return CourseMapper.toResponseDTO(repository.save(entity));
     }
 
@@ -39,6 +43,10 @@ public class CourseService {
 
     public List<CourseResponseDTO> getByName(String name){
         return repository.findByName(name).stream().map(CourseMapper::toResponseDTO).toList();
+    }
+
+    public List<CourseResponseDTO> searchByName(String name){
+        return repository.searchByName(name).stream().map(CourseMapper::toResponseDTO).toList();
     }
 
     public CourseResponseDTO update(CourseRequestDTO dto){
