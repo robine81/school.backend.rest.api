@@ -30,6 +30,8 @@ public class CourseService {
         Course entity = CourseMapper.toEntity(dto);
         if (repository.existsByName(dto.getName()))
             throw new ResourceAlreadyExistsException("Course with name " + dto.getName() + " already exists.");
+        if (dto.getTeacherId() != null && teacherRepository.existsById(dto.getTeacherId()))
+            entity.setTeacher(teacherRepository.findById(dto.getTeacherId()).get());
         return CourseMapper.toResponseDTO(repository.save(entity));
     }
 
@@ -56,6 +58,9 @@ public class CourseService {
         }
         if(dto.getMaxStudents() != null){
             existing.setMaxStudents(dto.getMaxStudents());
+        }
+        if(dto.getTeacherId() != null && teacherRepository.existsById(dto.getTeacherId())){
+            existing.setTeacher(teacherRepository.findById(dto.getTeacherId()).get());
         }
         repository.save(existing);
 
