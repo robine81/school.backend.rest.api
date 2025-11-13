@@ -13,6 +13,18 @@ public class Course {
     private String name;
     private Integer maxStudents;
 
+    @JoinColumn(name = "teacher")
+    @ManyToOne
+    private Teacher teacher;
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Enrolment> enrolments;
 
