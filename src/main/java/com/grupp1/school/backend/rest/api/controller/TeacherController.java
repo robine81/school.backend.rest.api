@@ -34,9 +34,9 @@ public class TeacherController {
         return ResponseEntity.ok(service.addTeacher(dto));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<TeacherResponseDTO> updateTeacher(@Valid @RequestBody TeacherRequestDTO dto){
-        return ResponseEntity.ok(service.update(dto));
+    @PutMapping("/{id}")
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable Long id, @Valid @RequestBody TeacherRequestDTO dto){
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
