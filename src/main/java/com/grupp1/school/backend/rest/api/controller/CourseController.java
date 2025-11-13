@@ -1,10 +1,9 @@
 package com.grupp1.school.backend.rest.api.controller;
 
-import com.grupp1.school.backend.rest.api.model.dto.CourseDTO;
+import com.grupp1.school.backend.rest.api.model.dto.CourseRequestDTO;
 import com.grupp1.school.backend.rest.api.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +19,17 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<CourseDTO> getAllCourses(){
+    public List<CourseRequestDTO> getAllCourses(){
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
+    public ResponseEntity<CourseRequestDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
         return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CourseDTO>> search(@RequestParam(required = false) String name){
+    public ResponseEntity<List<CourseRequestDTO>> search(@RequestParam(required = false) String name){
         if (name != null){
             return ResponseEntity.ok(service.getByName(name));
         }
@@ -38,12 +37,12 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<CourseDTO> addCourse(@Valid @RequestBody CourseDTO dto){
+    public ResponseEntity<CourseRequestDTO> addCourse(@Valid @RequestBody CourseRequestDTO dto){
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping
-    public ResponseEntity<CourseDTO> updateCourse(@Valid @RequestBody CourseDTO dto) {
+    public ResponseEntity<CourseRequestDTO> updateCourse(@Valid @RequestBody CourseRequestDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 

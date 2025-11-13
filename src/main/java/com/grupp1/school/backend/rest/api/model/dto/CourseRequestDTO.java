@@ -1,11 +1,10 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
-public class CourseDTO {
+public class CourseRequestDTO {
     @Positive(message = "ID must be positive.")
     Long id;
 
@@ -15,7 +14,7 @@ public class CourseDTO {
     @Min(value = 10, message = "A course must allow for a minimum of 10 students.")
     Integer maxStudents;
 
-    public CourseDTO(Long id, String name, Integer maxStudents) {
+    public CourseRequestDTO(Long id, String name, Integer maxStudents) {
         this.id = id;
         this.name = name;
         this.maxStudents = maxStudents;
