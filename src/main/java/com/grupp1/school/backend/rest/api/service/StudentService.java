@@ -1,12 +1,10 @@
 package com.grupp1.school.backend.rest.api.service;
 
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
-import com.grupp1.school.backend.rest.api.model.Enrolment;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
-import com.grupp1.school.backend.rest.api.repository.StudentRepositoryOld;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
-    public List<StudentDTO> getByName(String name) {
+    public List<StudentDTO> findByName(String name) {
         List<Student> students = repository.findByStudentName(name);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
@@ -48,7 +46,7 @@ public class StudentService {
         return studentsDTO;
     }
 
-    public List<StudentDTO> getByEmail(String email) {
+    public List<StudentDTO> findByEmail(String email) {
         List<Student> students = repository.findByStudentEmail(email);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
@@ -59,7 +57,18 @@ public class StudentService {
         return studentsDTO;
     }
 
-    public List<StudentDTO> getByAge(int age) {
+    public List<StudentDTO> findByNameAndAge(String name, int age) {
+        List<Student> students = repository. findByStudentNameContainingIgnoreCaseAndStudentAge(name, age);
+        List<StudentDTO> studentsDTO = new ArrayList<>();
+
+        for(Student s: students)
+        {
+            studentsDTO.add(toDTO(s));
+        }
+        return studentsDTO;
+    }
+
+    public List<StudentDTO> findByAge(int age) {
         List<Student> students = repository.findByStudentAge(age);
         List<StudentDTO> studentsDTO = new ArrayList<>();
 
@@ -70,12 +79,20 @@ public class StudentService {
         return studentsDTO;
     }
 
-    public StudentDTO addStudent (StudentDTO request) {
+    public List<StudentDTO> findByAgeBetween(int min, int max){
+        return repository.findByStudentAgeBetween(min, max)
+                .stream()
+                .map(StudentService::toDTO)
+                .toList();
+    }
+
+
+    public StudentDTO create(StudentDTO request) {
         return toDTO(repository.save(toEntity(request)));
 
     }
 
-    public StudentDTO updateStudent (int id, StudentDTO request) {
+    public StudentDTO update(int id, StudentDTO request) {
         Optional<Student> existing = repository.findById(id);
 
         if(existing.isPresent()){
@@ -88,7 +105,7 @@ public class StudentService {
         return null;
     }
 
-    public boolean deleteStudent(int id) {
+    public boolean delete(int id) {
         if(repository.existsById(id)) {
             repository.deleteById(id);
             return true;
