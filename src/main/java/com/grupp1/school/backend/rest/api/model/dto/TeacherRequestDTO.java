@@ -24,8 +24,6 @@ public class TeacherRequestDTO {
         this.name = name;
         this.email = email;
         this.courseList = courseList;
-
-        //TODO add courses or refactor
     }
 
     public TeacherRequestDTO(){}

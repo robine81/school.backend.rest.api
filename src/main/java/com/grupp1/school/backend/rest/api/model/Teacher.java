@@ -8,9 +8,8 @@ import java.util.List;
 @Table(name = "teachers")
 public class Teacher {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+   private @Id
+   @GeneratedValue Long id;
    private String name;
    private String email;
    private int age;

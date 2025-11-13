@@ -10,7 +10,6 @@ public class TeacherResponseDTO {
     private String email;
     private List<CourseResponseDTO> courseList;
 
-    //TODO use DTO
     public TeacherResponseDTO(Long id, String name, String email, List<CourseResponseDTO> courseList) {
         this.id = id;
         this.name = name;
