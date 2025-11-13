@@ -7,7 +7,6 @@ import java.util.List;
 
 public class TeacherRequestDTO {
 
-    @Positive(message = "ID must be positive")
     private Long id;
 
     @NotBlank(message = "Name is mandatory")

@@ -28,13 +28,16 @@ public class Teacher {
    public Teacher(){}
 
     public Teacher(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 
-    public List<Course> getCourses() {
+    public List<Course> getCourseList() {
         return courseList;
    }
 
-   public void setCourses(List<Course> courses) {
+   public void setCourseList(List<Course> courses) {
        this.courseList = courses;
    }
 
