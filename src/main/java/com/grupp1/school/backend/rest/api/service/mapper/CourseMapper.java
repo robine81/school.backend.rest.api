@@ -1,6 +1,7 @@
 package com.grupp1.school.backend.rest.api.service.mapper;
 
 import com.grupp1.school.backend.rest.api.model.Course;
+import com.grupp1.school.backend.rest.api.model.dto.CourseListDTO;
 import com.grupp1.school.backend.rest.api.model.dto.CourseRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.CourseResponseDTO;
 
@@ -21,6 +22,13 @@ public class CourseMapper {
         if (entity.getTeacher() != null){
             dto.setTeacher(entity.getTeacher().getName());
         }
+        return dto;
+    }
+
+    public static CourseListDTO mapEntityToTeacherCourseList(Course entity){
+        CourseListDTO dto = new CourseListDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
         return dto;
     }
 }

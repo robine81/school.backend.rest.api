@@ -8,11 +8,11 @@ public class TeacherResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private List<CourseResponseDTO> courseList;
+    private List<CourseListDTO> courseList;
 
     public TeacherResponseDTO() {}
 
-    public TeacherResponseDTO(Long id, String name, String email, List<CourseResponseDTO> courseList) {
+    public TeacherResponseDTO(Long id, String name, String email, List<CourseListDTO> courseList) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -44,10 +44,10 @@ public class TeacherResponseDTO {
     }
 
 
-    public List<CourseResponseDTO> getCourseList() {
+    public List<CourseListDTO> getCourseList() {
         return courseList;
     }
-    public void setCourseList(List<CourseResponseDTO> courseList) {
+    public void setCourseList(List<CourseListDTO> courseList) {
         this.courseList = courseList;
     }
 }
