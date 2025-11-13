@@ -1,5 +1,6 @@
 package com.grupp1.school.backend.rest.api.service;
 
+import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
@@ -85,6 +86,9 @@ public class StudentService {
     }
 
     public List<StudentResponseDTO> findByAgeBetween(int min, int max){
+        if(min > max) {
+            throw new IllegalArgumentException("Min age cannot be bigger than max age");
+        }
         return repository.findByStudentAgeBetween(min, max)
                 .stream()
                 .map(StudentMapper::toResponseDTO)
@@ -92,12 +96,19 @@ public class StudentService {
     }
 
     public StudentResponseDTO create(StudentRequestDTO request) {
+        if(repository.existsByStudentEmail(request.getStudentEmail())) {
+            throw new ResourceAlreadyExistsException("Email " + request.getStudentEmail() + " is already registered");
+        }
         return toResponseDTO(repository.save(toEntity(request)));
     }
 
     public Optional<StudentResponseDTO> update(Long id, StudentRequestDTO request) {
         return repository.findById(id)
                 .map(student -> {
+                    if(!student.getStudentEmail().equals(request.getStudentEmail())
+                            && repository.existsByStudentEmail(request.getStudentEmail())) {
+                        throw new ResourceAlreadyExistsException("Email " + request.getStudentEmail() + " is already registered");
+                    }
                     student.setStudentName(request.getStudentName());
                     student.setStudentEmail(request.getStudentEmail());
                     student.setStudentAge(request.getStudentAge());
@@ -118,21 +129,17 @@ public class StudentService {
     }
 
     public List<EnrolmentResponseDTO> findEnrolmentsByStudentId(Long studentId) {
-        Optional<Student> existing = repository.findById(studentId);
-        if(existing.isPresent()){
-            return existing.get().getEnrolments()
-                    .stream()
-                    .map(e -> {
-                        EnrolmentResponseDTO dto = new EnrolmentResponseDTO();
-                        dto.setId(e.getId());
-                        dto.setCourseId(e.getCourse().getId());
-                        dto.setStudentId(e.getStudent().getStudentId());
-                        return dto;
-                    })
-                    .collect(Collectors.toList());
-        }
-        else {
-            return List.of();
-        }
+        Student existing = repository.findById(studentId)
+        .orElseThrow(() -> new ResourceNotFoundException("Student with ID " + studentId + " not found"));
+        return existing.getEnrolments()
+                .stream()
+                .map(e -> {
+                    EnrolmentResponseDTO dto = new EnrolmentResponseDTO();
+                    dto.setId(e.getId());
+                    dto.setCourseId(e.getCourse().getId());
+                    dto.setStudentId(e.getStudent().getStudentId());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }
