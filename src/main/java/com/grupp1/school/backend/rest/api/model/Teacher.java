@@ -2,6 +2,8 @@ package com.grupp1.school.backend.rest.api.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "teachers")
 public class Teacher {
@@ -13,7 +15,22 @@ public class Teacher {
    private String name;
    private String email;
 
+   @OneToMany(mappedBy = "teacher", cascade = CascadeType.DETACH)
+   private List<Course> courses;
+
    public Teacher(){}
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Teacher(Integer id, int age, String name, String email){
        this.id = id;
