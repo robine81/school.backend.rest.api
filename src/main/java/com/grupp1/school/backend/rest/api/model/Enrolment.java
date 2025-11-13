@@ -18,6 +18,9 @@ public class Enrolment {
     @JoinColumn(name = "courseId", nullable = false)
     private Course course;
 
+    @Column(nullable = true)
+    private String grade;
+
     public Enrolment() {}
 
     public Long getId() {
