@@ -12,7 +12,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer studentId;
+    private Long studentId;
 
     @Column(name = "name")
     private String studentName;
@@ -24,7 +24,7 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Enrolment> enrolments;
 
-    public Student(Integer studentId, String studentName, int studentAge, String studentEmail) {
+    public Student(Long studentId, String studentName, int studentAge, String studentEmail) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.studentAge = studentAge;
@@ -41,8 +41,8 @@ public class Student {
 
     public Student() {}
 
-    public Integer getStudentId() { return studentId; }
-    public void setStudentId(Integer studentId) { this.studentId = studentId; }
+    public Long getStudentId() { return studentId; }
+    public void setStudentId(Long studentId) { this.studentId = studentId; }
 
     public String getStudentName() { return studentName; }
     public void setStudentName(String studentName) { this.studentName = studentName; }

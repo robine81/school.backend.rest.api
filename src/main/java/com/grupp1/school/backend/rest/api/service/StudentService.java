@@ -35,7 +35,7 @@ public class StudentService {
         return studentsRespDTO;
     }
 
-    public StudentResponseDTO getById(Integer id) {
+    public StudentResponseDTO getById(Long id) {
         return repository.findById(id)
             .map(StudentMapper::toResponseDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
@@ -95,7 +95,7 @@ public class StudentService {
         return toResponseDTO(repository.save(toEntity(request)));
     }
 
-    public Optional<StudentResponseDTO> update(int id, StudentRequestDTO request) {
+    public Optional<StudentResponseDTO> update(Long id, StudentRequestDTO request) {
         return repository.findById(id)
                 .map(student -> {
                     student.setStudentName(request.getStudentName());
@@ -105,7 +105,7 @@ public class StudentService {
                 });
     }
 
-    public boolean delete(int id) {
+    public boolean delete(Long id) {
         if(repository.existsById(id)) {
             repository.deleteById(id);
             return true;
@@ -117,20 +117,16 @@ public class StudentService {
         return repository.existsByStudentEmail(email);
     }
 
-    /*static public StudentResponseDTO toResponseDTO(Student student){
-        return new StudentResponseDTO(student.getStudentId(), student.getStudentName(), student.getStudentEmail(), student.getStudentAge());
-    }*/
-
-    public List<EnrolmentResponseDTO> findEnrolmentsByStudentId(Integer studentId) {
+    public List<EnrolmentResponseDTO> findEnrolmentsByStudentId(Long studentId) {
         Optional<Student> existing = repository.findById(studentId);
         if(existing.isPresent()){
             return existing.get().getEnrolments()
                     .stream()
                     .map(e -> {
                         EnrolmentResponseDTO dto = new EnrolmentResponseDTO();
-                        dto.setId(Long.valueOf(e.getId()));
-                        dto.setCourseId(Long.valueOf(e.getCourse().getId().intValue()));
-                        dto.setStudentId(Long.valueOf(e.getStudent().getStudentId().intValue()));
+                        dto.setId(e.getId());
+                        dto.setCourseId(e.getCourse().getId());
+                        dto.setStudentId(e.getStudent().getStudentId());
                         return dto;
                     })
                     .collect(Collectors.toList());

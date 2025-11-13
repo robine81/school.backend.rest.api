@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class StudentRequestDTO {
 
-    private Integer id;
+    private Long id;
     @NotBlank(message= "Student name must be specified")
     private String name;
     @NotBlank(message = "Email is mandatory")
@@ -25,7 +25,7 @@ public class StudentRequestDTO {
         this.age = studentAge;
     }
 
-    public StudentRequestDTO(Integer id, String name, String email, int age) {
+    public StudentRequestDTO(Long id, String name, String email, int age) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -33,8 +33,8 @@ public class StudentRequestDTO {
     }
 
     @JsonProperty("id")
-    public Integer getStudentId() { return id; }
-    public void setStudentId(Integer id) { this.id = id; }
+    public Long getStudentId() { return id; }
+    public void setStudentId(Long id) { this.id = id; }
 
     @JsonProperty("name")
     public String getStudentName() { return name; }
