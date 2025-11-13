@@ -6,10 +6,21 @@ import com.grupp1.school.backend.rest.api.model.dto.CourseResponseDTO;
 
 public class CourseMapper {
     public static Course toEntity(CourseRequestDTO dto){
-        return new Course(dto.getId(), dto.getName(), dto.getMaxStudents());
+        Course entity = new Course();
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setMaxStudents(dto.getMaxStudents());
+        return entity;
     }
 
     public static CourseResponseDTO toResponseDTO(Course entity){
-        return new CourseResponseDTO(entity.getId(), entity.getName(), entity.getMaxStudents());
+        CourseResponseDTO dto = new CourseResponseDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setMaxStudents(entity.getMaxStudents());
+        if (entity.getTeacher() != null){
+            dto.setTeacher(entity.getTeacher().getName());
+        }
+        return dto;
     }
 }
