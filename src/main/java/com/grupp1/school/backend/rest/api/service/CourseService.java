@@ -10,6 +10,7 @@ import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
 import com.grupp1.school.backend.rest.api.service.mapper.CourseMapper;
+import com.grupp1.school.backend.rest.api.service.mapper.StudentMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class CourseService {
         if (course.isPresent()){
             students.addAll(course.get().getEnrolments().stream()
                     .map(Enrolment::getStudent)
-                    .map(StudentService::toResponseDTO).toList());
+                    .map(StudentMapper::toResponseDTO).toList());
         }
         return students;
     }
