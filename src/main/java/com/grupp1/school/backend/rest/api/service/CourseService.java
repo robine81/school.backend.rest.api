@@ -4,7 +4,7 @@ import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsExcepti
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
 import com.grupp1.school.backend.rest.api.model.Course;
 import com.grupp1.school.backend.rest.api.model.Enrolment;
-import com.grupp1.school.backend.rest.api.model.dto.CourseDTO;
+import com.grupp1.school.backend.rest.api.model.dto.CourseRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import org.springframework.stereotype.Service;
@@ -21,25 +21,25 @@ public class CourseService {
         this.repository = repository;
     }
 
-    public CourseDTO create(CourseDTO dto){
+    public CourseRequestDTO create(CourseRequestDTO dto){
         Course entity = mapDtoToEntity(dto);
         if (repository.existsByName(dto.getName())) throw new ResourceAlreadyExistsException("Course already exists.");
         return mapEntityToDto(repository.save(entity));
     }
 
-    public List<CourseDTO> getAll(){
+    public List<CourseRequestDTO> getAll(){
         return repository.findAll().stream().map(this::mapEntityToDto).toList();
     }
 
-    public CourseDTO getById(Long id){
+    public CourseRequestDTO getById(Long id){
         return repository.findById(id).map(this::mapEntityToDto).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + id));
     }
 
-    public List<CourseDTO> getByName(String name){
+    public List<CourseRequestDTO> getByName(String name){
         return repository.findByName(name).stream().map(this::mapEntityToDto).toList();
     }
 
-    public CourseDTO update(CourseDTO dto){
+    public CourseRequestDTO update(CourseRequestDTO dto){
         Course existing = repository.findById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + dto.getId()));
         if(dto.getName() != null){
             existing.setName(dto.getName());
@@ -71,11 +71,11 @@ public class CourseService {
         return students;
     }
 
-    private Course mapDtoToEntity(CourseDTO dto){
+    private Course mapDtoToEntity(CourseRequestDTO dto){
         return new Course(dto.getId(), dto.getName(), dto.getMaxStudents());
     }
 
-    private CourseDTO mapEntityToDto(Course entity){
-        return new CourseDTO(entity.getId(), entity.getName(), entity.getMaxStudents());
+    private CourseRequestDTO mapEntityToDto(Course entity){
+        return new CourseRequestDTO(entity.getId(), entity.getName(), entity.getMaxStudents());
     }
 }
