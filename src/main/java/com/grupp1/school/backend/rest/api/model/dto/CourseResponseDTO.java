@@ -4,11 +4,13 @@ public class CourseResponseDTO {
     Long id;
     String name;
     Integer maxStudents;
+    String teacher;
 
-    public CourseResponseDTO(Long id, String name, Integer maxStudents) {
+    public CourseResponseDTO(Long id, String name, Integer maxStudents, String teacher) {
         this.id = id;
         this.name = name;
         this.maxStudents = maxStudents;
+        this.teacher = teacher;
     }
 
     public CourseResponseDTO() {
@@ -36,5 +38,13 @@ public class CourseResponseDTO {
 
     public void setMaxStudents(Integer maxStudents) {
         this.maxStudents = maxStudents;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 }

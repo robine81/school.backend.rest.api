@@ -14,6 +14,13 @@ public class CourseRequestDTO {
     @Min(value = 10, message = "A course must allow for a minimum of 10 students.")
     Integer maxStudents;
 
+    @Positive(message = "Teacher ID must be positive.")
+    Long teacherId;
+
+    public CourseRequestDTO(){
+
+    }
+
     public CourseRequestDTO(Long id, String name, Integer maxStudents) {
         this.id = id;
         this.name = name;
@@ -32,6 +39,10 @@ public class CourseRequestDTO {
         return maxStudents;
     }
 
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -42,5 +53,9 @@ public class CourseRequestDTO {
 
     public void setMaxStudents(Integer maxStudents) {
         this.maxStudents = maxStudents;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 }

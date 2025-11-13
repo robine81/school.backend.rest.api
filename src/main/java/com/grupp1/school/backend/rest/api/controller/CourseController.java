@@ -19,30 +19,27 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<CourseRequestDTO> getAllCourses(){
+    public List<?> getAllCourses(){
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseRequestDTO> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
+    public ResponseEntity<?> getCourseById(@Min(value = 1, message = "ID needs to be non-zero positive integer.") @PathVariable Long id){
         return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CourseRequestDTO>> search(@RequestParam(required = false) String name){
-        if (name != null){
-            return ResponseEntity.ok(service.getByName(name));
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<List<?>> search(@RequestParam String name){
+        return ResponseEntity.ok(service.searchByName(name));
     }
 
     @PostMapping
-    public ResponseEntity<CourseRequestDTO> addCourse(@Valid @RequestBody CourseRequestDTO dto){
+    public ResponseEntity<?> addCourse(@Valid @RequestBody CourseRequestDTO dto){
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping
-    public ResponseEntity<CourseRequestDTO> updateCourse(@Valid @RequestBody CourseRequestDTO dto) {
+    public ResponseEntity<?> updateCourse(@Valid @RequestBody CourseRequestDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 
