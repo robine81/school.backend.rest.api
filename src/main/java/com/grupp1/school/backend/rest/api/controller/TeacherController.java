@@ -4,6 +4,7 @@ import com.grupp1.school.backend.rest.api.model.dto.TeacherRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.TeacherResponseDTO;
 import com.grupp1.school.backend.rest.api.service.TeacherService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,11 +40,9 @@ public class TeacherController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable Long id){
-        if (service.deleteById(id)){
-            return ResponseEntity.ok("Deletion succesful");
-        }
-        return ResponseEntity.notFound().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTeacher(@PathVariable Long id){
+        service.deleteById(id);
     }
 
 }

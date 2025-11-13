@@ -15,7 +15,7 @@ public class Teacher {
    private String email;
    private int age;
 
-   @OneToMany(mappedBy = "teacher", cascade = CascadeType.DETACH)
+   @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
    private List<Course> courseList = List.of();
 
    public Teacher(Long id, String name, String email, List<Course> courseList){
