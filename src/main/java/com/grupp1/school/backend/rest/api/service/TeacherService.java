@@ -42,7 +42,7 @@ public class TeacherService {
 
     //TODO refactor this method
     public TeacherResponseDTO addTeacher(TeacherRequestDTO dto){
-        if(repository.existsById(dto.getId())) {
+        if(repository.existsByEmail(dto.getEmail())) {
             throw new ResourceAlreadyExistsException("This teacher already exists");
         } else {
             Teacher saved = repository.save(TeacherMapper.MapRequestToEntity(dto));

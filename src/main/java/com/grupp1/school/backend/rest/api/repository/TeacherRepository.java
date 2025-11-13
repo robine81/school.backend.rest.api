@@ -14,6 +14,7 @@ public interface TeacherRepository extends JpaRepository<Teacher,Integer> {
 
     Optional<Teacher> findByEmail(String email);
 
+    boolean existsByEmail(String email);
     // Needed due to changing id to Long
     Optional<Teacher> findById(Long id);
     void deleteById(Long id);
