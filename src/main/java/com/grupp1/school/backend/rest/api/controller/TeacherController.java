@@ -1,6 +1,7 @@
 package com.grupp1.school.backend.rest.api.controller;
 
-import com.grupp1.school.backend.rest.api.model.dto.TeacherDTO;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherRequestDTO;
+import com.grupp1.school.backend.rest.api.model.dto.TeacherResponseDTO;
 import com.grupp1.school.backend.rest.api.service.TeacherService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,27 +19,27 @@ public class TeacherController {
     }
 
     @GetMapping
-    public List<TeacherDTO> getAll(){
+    public List<TeacherResponseDTO> getAll(){
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable int id){
+    public ResponseEntity<TeacherResponseDTO> getTeacherById(@PathVariable Long id){
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<TeacherDTO> addTeacher(@Valid @RequestBody TeacherDTO dto){
+    public ResponseEntity<TeacherResponseDTO> addTeacher(@Valid @RequestBody TeacherRequestDTO dto){
         return ResponseEntity.ok(service.addTeacher(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<TeacherDTO> updateTeacher(@Valid @RequestBody TeacherDTO dto){
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@Valid @RequestBody TeacherRequestDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable int id){
+    public ResponseEntity<String> deleteTeacher(@PathVariable Long id){
         if (service.deleteById(id)){
             return ResponseEntity.ok("Deletion succesful");
         }
