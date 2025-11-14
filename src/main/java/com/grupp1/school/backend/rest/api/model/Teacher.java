@@ -2,7 +2,7 @@ package com.grupp1.school.backend.rest.api.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teachers")
@@ -14,15 +14,15 @@ public class Teacher {
    private String email;
 
    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-   private List<Course> courseList = List.of();
+   private Set<Course> courses;
 
    public Teacher(){}
 
-   public Teacher(Long id, String name, String email, List<Course> courseList){
+   public Teacher(Long id, String name, String email, Set<Course> courses){
        this.id = id;
        this.name = name;
        this.email = email;
-       this.courseList = courseList;
+       this.courses = courses;
    }
 
    public Teacher(Long id, String name, String email) {
@@ -31,11 +31,11 @@ public class Teacher {
        this.email = email;
    }
 
-   public List<Course> getCourseList() {
-        return courseList;
+   public Set<Course> getCourses() {
+        return courses;
    }
-   public void setCourseList(List<Course> courses) {
-       this.courseList = courses;
+   public void setCourses(Set<Course> courses) {
+       this.courses = courses;
    }
 
 

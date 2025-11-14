@@ -1,22 +1,20 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
-import com.grupp1.school.backend.rest.api.model.Course;
-
-import java.util.List;
+import java.util.Set;
 
 public class TeacherResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private List<CourseListDTO> courseList;
+    private Set<CourseListDTO> courses;
 
     public TeacherResponseDTO() {}
 
-    public TeacherResponseDTO(Long id, String name, String email, List<CourseListDTO> courseList) {
+    public TeacherResponseDTO(Long id, String name, String email, Set<CourseListDTO> courses) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.courseList = courseList;
+        this.courses = courses;
     }
 
 
@@ -44,10 +42,10 @@ public class TeacherResponseDTO {
     }
 
 
-    public List<CourseListDTO> getCourseList() {
-        return courseList;
+    public Set<CourseListDTO> getCourses() {
+        return courses;
     }
-    public void setCourseList(List<CourseListDTO> courseList) {
-        this.courseList = courseList;
+    public void setCourses(Set<CourseListDTO> courses) {
+        this.courses = courses;
     }
 }
