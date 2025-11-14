@@ -9,7 +9,9 @@ import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/students")
@@ -49,7 +51,8 @@ public class StudentController {
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/search")
+    //using Spring Data-method
+    @GetMapping("/find")
     public ResponseEntity<List<StudentResponseDTO>> find(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer age,
@@ -69,6 +72,37 @@ public class StudentController {
             results= service.getAll();
         }
         return ResponseEntity.ok(results);
+    }
+
+    //using @Query method
+    @GetMapping ("/search")
+    public ResponseEntity<List<StudentResponseDTO>> search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max) {
+        List<StudentResponseDTO> results;
+
+        if(min != null && max != null) {
+            results = service.searchByAgeBetween(min, max);
+        } else if(name != null && age != null){
+            results = service.searchByNameAndAge(name, age);
+        } else if(age != null){
+            results = service.searchByAge(age);
+        } else if (name != null) {
+            results = service.searchByName(name);
+        } else {
+            results= service.getAll();
+        }
+        return ResponseEntity.ok(results);
+
+    }
+
+    @GetMapping("/statistics/count")
+    public ResponseEntity<Map<String, Long>> getStudentCount() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalStudents", service.getTotalStudentCount());
+        return ResponseEntity.ok(stats);
     }
 
     @GetMapping("/{id}/enrolments")
