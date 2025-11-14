@@ -42,6 +42,22 @@ public class StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
+    public long getTotalStudentCount() {
+        return repository.count();
+    }
+
+    //@Query method
+    public List<StudentResponseDTO> searchByName(String name) {
+        List<Student> students = repository.searchByName(name);
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
+
+        for(Student s : students) {
+            studentsDTO.add(toResponseDTO(s));
+        }
+        return studentsDTO;
+    }
+
+    //Spring Boot method
     public List<StudentResponseDTO> findByName(String name) {
         List<Student> students = repository.findByStudentNameContainingIgnoreCase(name);
         List<StudentResponseDTO> studentsDTO = new ArrayList<>();
@@ -64,7 +80,18 @@ public class StudentService {
     }
 
     public List<StudentResponseDTO> findByNameAndAge(String name, int age) {
-        List<Student> students = repository. findByStudentNameContainingIgnoreCaseAndStudentAge(name, age);
+        List<Student> students = repository.findByStudentNameContainingIgnoreCaseAndStudentAge(name, age);
+        List<StudentResponseDTO> studentsDTO = new ArrayList<>();
+
+        for(Student s: students)
+        {
+            studentsDTO.add(toResponseDTO(s));
+        }
+        return studentsDTO;
+    }
+
+    public List<StudentResponseDTO> searchByNameAndAge(String name, int age) {
+        List<Student> students = repository.searchByNameAndAge(name, age);
         List<StudentResponseDTO> studentsDTO = new ArrayList<>();
 
         for(Student s: students)
@@ -83,6 +110,27 @@ public class StudentService {
             studentsRespDTO.add(toResponseDTO(s));
         }
         return studentsRespDTO;
+    }
+
+    public List<StudentResponseDTO> searchByAge(int age) {
+        List<Student> students = repository.searchByAge(age);
+        List<StudentResponseDTO> studentsRespDTO = new ArrayList<>();
+
+        for(Student s: students)
+        {
+            studentsRespDTO.add(toResponseDTO(s));
+        }
+        return studentsRespDTO;
+    }
+
+    public List<StudentResponseDTO> searchByAgeBetween(int min, int max){
+        if(min > max) {
+            throw new IllegalArgumentException("Min age cannot be bigger than max age");
+        }
+        return repository.searchByAgeBetween(min, max)
+                .stream()
+                .map(StudentMapper::toResponseDTO)
+                .toList();
     }
 
     public List<StudentResponseDTO> findByAgeBetween(int min, int max){
