@@ -19,7 +19,7 @@ public class TeacherMapper {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
-        dto.setCourseList(entity.getCourseList().stream().map(CourseMapper::toResponseDTO).toList());
+        dto.setCourseList(entity.getCourseList().stream().map(CourseMapper::mapEntityToTeacherCourseList).toList());
         return dto;
     }
 }

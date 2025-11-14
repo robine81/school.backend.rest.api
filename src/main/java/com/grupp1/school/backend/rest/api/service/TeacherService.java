@@ -8,7 +8,6 @@ import com.grupp1.school.backend.rest.api.model.dto.TeacherRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.TeacherResponseDTO;
 import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import com.grupp1.school.backend.rest.api.repository.TeacherRepository;
-import com.grupp1.school.backend.rest.api.service.mapper.CourseMapper;
 import com.grupp1.school.backend.rest.api.service.mapper.TeacherMapper;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,6 @@ public class TeacherService {
         return repository.findByName(name).stream().map(TeacherMapper::toResponse).toList();
     }
 
-    //TODO refactor this method
     public TeacherResponseDTO addTeacher(TeacherRequestDTO dto){
         if(repository.existsByEmail(dto.getEmail())) {
             throw new ResourceAlreadyExistsException("This teacher already exists");
@@ -66,16 +64,18 @@ public class TeacherService {
         return false;
     }
 
-    public TeacherResponseDTO update(TeacherRequestDTO dto){
+    public TeacherResponseDTO update(Long id, TeacherRequestDTO dto){
 
-        Optional<Teacher> opt = repository.findById(dto.getId());
+        Optional<Teacher> opt = repository.findById(id);
 
         if (opt.isPresent()){
             Teacher existing = opt.get();
             existing.setName(dto.getName());
             existing.setEmail(dto.getEmail());
-            repository.save(existing);
-            return TeacherMapper.toResponse(existing);
+            // TODO figure out why this throws an exception
+//            existing.setCourseList(dto.getCourseList().stream()
+//                    .map((courseId) -> this.convertCourseIdToCourse(courseId, existing)).toList());
+            return TeacherMapper.toResponse(repository.save(existing));
         }
 
         return null;
@@ -85,6 +85,9 @@ public class TeacherService {
     private Course convertCourseIdToCourse(Long courseId, Teacher teacher){
         Optional<Course> optionalCourse = courseRepository.findById(courseId);
         if(optionalCourse.isPresent()){
+            if(optionalCourse.get().getTeacher() != null){
+                throw new ResourceAlreadyExistsException("Course with id " + courseId + " is already being taught by " + optionalCourse.get().getTeacher().getName());
+            }
             optionalCourse.get().setTeacher(teacher);
             return optionalCourse.get();
         } else {

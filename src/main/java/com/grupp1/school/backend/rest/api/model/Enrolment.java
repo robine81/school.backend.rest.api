@@ -1,9 +1,7 @@
 package com.grupp1.school.backend.rest.api.model;
 
-import com.grupp1.school.backend.rest.api.model.dto.EnrolmentDTO;
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
 @Table(name = "enrolments")
@@ -50,7 +48,7 @@ public class Enrolment {
         EnrolmentResponseDTO e = new EnrolmentResponseDTO();
         e.setId(this.getId());
         e.setCourseId(this.getCourse().getId());
-        e.setStudentId(Long.valueOf(this.getStudent().getStudentId()));
+        e.setStudentId(this.getStudent().getStudentId());
         return e;
     }
 
