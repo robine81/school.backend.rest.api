@@ -2,16 +2,21 @@ package com.grupp1.school.backend.rest.api.service;
 
 import com.grupp1.school.backend.rest.api.exception.ResourceAlreadyExistsException;
 import com.grupp1.school.backend.rest.api.exception.ResourceNotFoundException;
+import com.grupp1.school.backend.rest.api.model.Course;
+import com.grupp1.school.backend.rest.api.model.Enrolment;
 import com.grupp1.school.backend.rest.api.model.Student;
 import com.grupp1.school.backend.rest.api.model.dto.EnrolmentResponseDTO;
+import com.grupp1.school.backend.rest.api.model.dto.StudentCourseResponseDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
+import com.grupp1.school.backend.rest.api.repository.CourseRepository;
 import com.grupp1.school.backend.rest.api.repository.StudentRepository;
 import com.grupp1.school.backend.rest.api.service.mapper.StudentMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,8 +27,12 @@ import static com.grupp1.school.backend.rest.api.service.mapper.StudentMapper.to
 public class StudentService {
 
     private final StudentRepository repository;
+    private final CourseRepository courseRepository;
 
-    public StudentService(StudentRepository repository) { this.repository = repository; }
+    public StudentService(StudentRepository repository, CourseRepository courseRepository) {
+        this.repository = repository;
+        this.courseRepository = courseRepository;
+    }
 
     public List<StudentResponseDTO> getAll() {
         List<Student> students = repository.findAll();
@@ -189,5 +198,22 @@ public class StudentService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public StudentCourseResponseDTO findByIdAndGetCoursesWithGrades(Long id){
+        Student existing = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student with ID " + id + " not found"));
+        return StudentMapper.toCourseResponseDTO(existing);
+    }
+
+    public StudentCourseResponseDTO setGradeForEnrolmentToCourse(Long id, Long courseId, Integer grade){
+        Student existing = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student with ID " + id + " not found"));
+        Course existingCourse = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course with ID " + courseId + " not found."));
+        Optional<Enrolment> enrolment = existing.getEnrolments().stream().filter(e -> e.getCourse().getId().equals(courseId)).findFirst();
+        if (enrolment.isPresent()) {
+            enrolment.get().setGrade(grade);
+        } else {
+            existing.getEnrolments().add(new Enrolment(existing, existingCourse, grade));
+        }
+        return StudentMapper.toCourseResponseDTO(repository.save(existing));
     }
 }

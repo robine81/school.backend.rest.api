@@ -55,6 +55,7 @@ public class EnrolmentService {
             throw new ResourceNotFoundException("Course not found");
         }
         e.setCourse(course.get());
+        e.setGrade(enrolmentRequestDTO.getGrade());
         return e;
     }
 

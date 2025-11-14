@@ -19,7 +19,13 @@ public class Enrolment {
     private Course course;
 
     @Column(nullable = true)
-    private String grade;
+    private Integer grade;
+
+    public Enrolment(Student student, Course course, Integer grade) {
+        this.student = student;
+        this.course = course;
+        this.grade = grade;
+    }
 
     public Enrolment() {}
 
@@ -45,6 +51,14 @@ public class Enrolment {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public EnrolmentResponseDTO toResponseDTO() {
