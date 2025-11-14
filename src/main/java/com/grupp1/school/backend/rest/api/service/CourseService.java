@@ -52,8 +52,8 @@ public class CourseService {
         return repository.searchByName(name).stream().map(CourseMapper::toResponseDTO).toList();
     }
 
-    public CourseResponseDTO update(CourseRequestDTO dto){
-        Course existing = repository.findById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + dto.getId()));
+    public CourseResponseDTO update(Long id, CourseRequestDTO dto){
+        Course existing = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Couldn't find course with id = " + dto.getId()));
         if(dto.getName() != null){
             existing.setName(dto.getName());
         }
