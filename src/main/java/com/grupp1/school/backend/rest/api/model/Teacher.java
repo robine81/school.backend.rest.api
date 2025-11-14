@@ -25,7 +25,6 @@ public class Teacher {
        this.courses = courses;
    }
 
-
    public void setId(Long id) {
         this.id = id;
     }

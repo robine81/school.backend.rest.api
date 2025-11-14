@@ -34,7 +34,7 @@ public class EnrolmentService {
 
     public EnrolmentResponseDTO createEnrolment(EnrolmentRequestDTO enrolmentRequestDTO) {
 
-        if (enrolmentRepository.existsByStudentStudentIdAndCourseId(enrolmentRequestDTO.getStudentID().intValue(), Integer.valueOf(enrolmentRequestDTO.getCourseID().intValue()))) {
+        if (enrolmentRepository.existsByStudentStudentIdAndCourseId(enrolmentRequestDTO.getStudentID(), enrolmentRequestDTO.getCourseID())) {
             throw new ResourceAlreadyExistsException("Resource Already Exists");
         }
         Enrolment e = convertToEntity(enrolmentRequestDTO);
