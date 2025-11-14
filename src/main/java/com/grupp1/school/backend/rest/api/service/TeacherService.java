@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TeacherService {
@@ -49,8 +50,8 @@ public class TeacherService {
             throw new ResourceAlreadyExistsException("This teacher already exists");
         } else {
             Teacher teacher = TeacherMapper.toEntity(dto);
-            teacher.setCourseList(dto.getCourseList().stream()
-                    .map((id) -> this.convertCourseIdToCourse(id, teacher)).toList());
+            teacher.setCourses(dto.getCourses().stream().map(
+                    (id) -> this.convertCourseIdToCourse(id, teacher)).collect(Collectors.toSet()));
 
             return  TeacherMapper.toResponse(repository.save(teacher));
         }
@@ -72,9 +73,9 @@ public class TeacherService {
             Teacher existing = opt.get();
             existing.setName(dto.getName());
             existing.setEmail(dto.getEmail());
-            // TODO figure out why this throws an exception
-//            existing.setCourseList(dto.getCourseList().stream()
-//                    .map((courseId) -> this.convertCourseIdToCourse(courseId, existing)).toList());
+            existing.setCourses(dto.getCourses().stream().map(
+                    (courseId) -> this.convertCourseIdToCourse(courseId, existing)).collect(Collectors.toSet()));
+
             return TeacherMapper.toResponse(repository.save(existing));
         }
 

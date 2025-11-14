@@ -1,9 +1,7 @@
 package com.grupp1.school.backend.rest.api.model.dto;
 
-import com.grupp1.school.backend.rest.api.model.Course;
 import jakarta.validation.constraints.*;
-
-import java.util.List;
+import java.util.Set;
 
 public class TeacherRequestDTO {
 
@@ -17,16 +15,7 @@ public class TeacherRequestDTO {
     @NotBlank(message = "E-mail is mandatory")
     private String email;
 
-    private List<Long> courseList;
-
-    public TeacherRequestDTO(){}
-
-    public TeacherRequestDTO(Long id, String name, String email, List<Long> courseList){
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.courseList = courseList;
-    }
+    private Set<Long> courses;
 
     public Long getId() {
         return id;
@@ -49,10 +38,10 @@ public class TeacherRequestDTO {
         this.email = email;
     }
 
-    public List<Long> getCourseList() {
-        return courseList;
+    public Set<Long> getCourses() {
+        return courses;
     }
-    public void setCourseList(List<Long> courseList) {
-        this.courseList = courseList;
+    public void setCourseList(Set<Long> courses) {
+        this.courses = courses;
     }
 }
