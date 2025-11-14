@@ -114,11 +114,6 @@ public class StudentController {
         return ResponseEntity.ok(service.findEnrolmentsByStudentId(id));
     }
 
-    @GetMapping("/enrolments/{id}")
-    public List<EnrolmentResponseDTO> listEnrolments (@PathVariable Long id) {
-        return service.findEnrolmentsByStudentId(id);
-    }
-
     @GetMapping("/{id}/grades")
     public ResponseEntity<?> getStudentAndCoursesWithGrades(@PathVariable Long id){
         return ResponseEntity.ok(service.findByIdAndGetCoursesWithGrades(id));
