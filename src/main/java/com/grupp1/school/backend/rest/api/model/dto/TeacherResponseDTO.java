@@ -8,15 +8,6 @@ public class TeacherResponseDTO {
     private String email;
     private Set<CourseListDTO> courses;
 
-    public TeacherResponseDTO() {}
-
-    public TeacherResponseDTO(Long id, String name, String email, Set<CourseListDTO> courses) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.courses = courses;
-    }
-
 
     public Long getId() {
         return id;

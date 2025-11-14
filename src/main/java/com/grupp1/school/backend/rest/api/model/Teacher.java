@@ -18,19 +18,6 @@ public class Teacher {
 
    public Teacher(){}
 
-   public Teacher(Long id, String name, String email, Set<Course> courses){
-       this.id = id;
-       this.name = name;
-       this.email = email;
-       this.courses = courses;
-   }
-
-   public Teacher(Long id, String name, String email) {
-       this.id = id;
-       this.name = name;
-       this.email = email;
-   }
-
    public Set<Course> getCourses() {
         return courses;
    }

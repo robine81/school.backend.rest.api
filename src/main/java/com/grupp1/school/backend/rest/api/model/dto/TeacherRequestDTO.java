@@ -17,15 +17,6 @@ public class TeacherRequestDTO {
 
     private Set<Long> courses;
 
-    public TeacherRequestDTO(){}
-
-    public TeacherRequestDTO(Long id, String name, String email, Set<Long> courses){
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.courses = courses;
-    }
-
     public Long getId() {
         return id;
     }
