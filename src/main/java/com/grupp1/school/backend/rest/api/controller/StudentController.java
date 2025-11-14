@@ -5,7 +5,11 @@ import com.grupp1.school.backend.rest.api.model.dto.StudentRequestDTO;
 import com.grupp1.school.backend.rest.api.model.dto.StudentResponseDTO;
 import com.grupp1.school.backend.rest.api.service.StudentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,8 +114,15 @@ public class StudentController {
         return ResponseEntity.ok(service.findEnrolmentsByStudentId(id));
     }
 
-    @GetMapping("/enrolments/{id}")
-    public List<EnrolmentResponseDTO> listEnrolments (@PathVariable Long id) {
-        return service.findEnrolmentsByStudentId(id);
+    @GetMapping("/{id}/grades")
+    public ResponseEntity<?> getStudentAndCoursesWithGrades(@PathVariable Long id){
+        return ResponseEntity.ok(service.findByIdAndGetCoursesWithGrades(id));
+    }
+
+    @PatchMapping("{id}/grades")
+    public ResponseEntity<?> setGradeForStudentInCourse(@PathVariable Long id,
+                                                        @RequestParam Long courseId,
+                                                        @RequestParam @Positive @Max(100) Integer grade){
+        return ResponseEntity.ok(service.setGradeForEnrolmentToCourse(id, courseId, grade));
     }
 }
